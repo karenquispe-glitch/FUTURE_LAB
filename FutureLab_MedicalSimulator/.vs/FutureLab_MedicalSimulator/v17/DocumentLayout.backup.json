@@ -1,12 +1,37 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\PROYECTOS LAB UNITY\\FutureLab_MedicalSimulator\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\UnityProjects\\FUTURE_LAB-main\\FutureLab_MedicalSimulator\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|c:\\unityprojects\\future_lab-main\\futurelab_medicalsimulator\\assets\\scripts\\clinicalcase\\interviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\interviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "InterviewController.cs",
+              "DocumentMoniker": "C:\\UnityProjects\\FUTURE_LAB-main\\FutureLab_MedicalSimulator\\Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
+              "ToolTip": "C:\\UnityProjects\\FUTURE_LAB-main\\FutureLab_MedicalSimulator\\Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
+              "ViewState": "AgIAAN4AAAAAAAAAAAAswAoBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-05T20:36:17.935Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
