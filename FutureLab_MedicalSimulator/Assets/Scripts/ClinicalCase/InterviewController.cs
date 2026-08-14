@@ -4,49 +4,72 @@ using UnityEngine;
 
 public class InterviewController : MonoBehaviour
 {
+    // =====================================================
+    // PANELES
+    // =====================================================
+
     [Header("Paneles")]
     [SerializeField] private GameObject patientInfoPanel;
     [SerializeField] private GameObject interviewPanel;
     [SerializeField] private GameObject registeredDataPanel;
     [SerializeField] private GameObject clinicalAssessmentPanel;
 
+    // =====================================================
+    // TEXTOS
+    // =====================================================
+
     [Header("Textos")]
     [SerializeField] private TMP_Text patientResponseText;
     [SerializeField] private TMP_Text registeredDataText;
 
+    // =====================================================
+    // ALERTAS DE DESEMPEÑO
+    // =====================================================
+
+    [Header("Sistema de alertas")]
+    [SerializeField] private HUDController hudController;
+
+    // =====================================================
+    // VARIABLES
+    // =====================================================
+
     private int selectedQuestion = 0;
-    private HashSet<int> savedQuestions = new HashSet<int>();
+
+    private HashSet<int> savedQuestions =
+        new HashSet<int>();
 
     private const string InitialMessage =
         "Seleccione una pregunta para conocer la respuesta del paciente.";
 
+    // =====================================================
+    // INICIO
+    // =====================================================
+
     private void Start()
     {
-        // La entrevista empieza oculta.
         if (interviewPanel != null)
         {
             interviewPanel.SetActive(false);
         }
 
-        // Los datos registrados empiezan ocultos.
         if (registeredDataPanel != null)
         {
             registeredDataPanel.SetActive(false);
         }
 
-        // La valoración clínica empieza oculta.
         if (clinicalAssessmentPanel != null)
         {
             clinicalAssessmentPanel.SetActive(false);
         }
 
         SetResponse(InitialMessage);
+
         UpdateRegisteredData();
     }
 
-    // -----------------------------------------------------
+    // =====================================================
     // ABRIR ENTREVISTA
-    // -----------------------------------------------------
+    // =====================================================
 
     public void OpenInterview()
     {
@@ -68,43 +91,57 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 0;
 
         SetResponse(InitialMessage);
+
         UpdateRegisteredData();
     }
 
-    // -----------------------------------------------------
-    // PREGUNTAS Y RESPUESTAS
-    // -----------------------------------------------------
+    // =====================================================
+    // PREGUNTA 1
+    // =====================================================
 
     public void ShowAnswer1()
     {
         selectedQuestion = 1;
 
         SetResponse(
-            "Desde hace un tiempo tengo dolor de cabeza, mareos y, " +
-            "después de bañarme con agua tibia, me da mucha picazón " +
-            "en todo el cuerpo."
+            "Desde hace un tiempo tengo dolor de cabeza, " +
+            "mareos y, después de bañarme con agua tibia, " +
+            "me da mucha picazón en todo el cuerpo."
         );
     }
+
+    // =====================================================
+    // PREGUNTA 2
+    // =====================================================
 
     public void ShowAnswer2()
     {
         selectedQuestion = 2;
 
         SetResponse(
-            "Las molestias comenzaron hace varios meses y últimamente " +
-            "se han vuelto más frecuentes."
+            "Las molestias comenzaron hace varios meses " +
+            "y últimamente se han vuelto más frecuentes."
         );
     }
+
+    // =====================================================
+    // PREGUNTA 3
+    // =====================================================
 
     public void ShowAnswer3()
     {
         selectedQuestion = 3;
 
         SetResponse(
-            "La picazón aparece principalmente después de bañarme " +
-            "con agua tibia y puede durar varios minutos."
+            "La picazón aparece principalmente después " +
+            "de bañarme con agua tibia y puede durar " +
+            "varios minutos."
         );
     }
+
+    // =====================================================
+    // PREGUNTA 4
+    // =====================================================
 
     public void ShowAnswer4()
     {
@@ -115,39 +152,89 @@ public class InterviewController : MonoBehaviour
         );
     }
 
+    // =====================================================
+    // PREGUNTA 5
+    // =====================================================
+
     public void ShowAnswer5()
     {
         selectedQuestion = 5;
 
         SetResponse(
-            "No he perdido el conocimiento, aunque algunas veces " +
-            "el mareo ha sido bastante intenso."
+            "No he perdido el conocimiento, aunque algunas " +
+            "veces el mareo ha sido bastante intenso."
         );
     }
 
-    // -----------------------------------------------------
+    // =====================================================
     // GUARDAR RESPUESTA
-    // -----------------------------------------------------
+    // =====================================================
 
     public void SaveCurrentResponse()
     {
+        // ---------------------------------------------
+        // ERROR 1:
+        // Intentar guardar sin seleccionar pregunta.
+        // ---------------------------------------------
+
         if (selectedQuestion == 0)
         {
             Debug.LogWarning(
                 "Primero debe seleccionar una pregunta."
             );
 
+            if (hudController != null)
+            {
+                hudController.ShowWarningAlert(
+                    "Primero debe seleccionar una pregunta."
+                );
+            }
+
             return;
         }
 
-        // HashSet evita guardar la misma pregunta dos veces.
-        savedQuestions.Add(selectedQuestion);
+        // ---------------------------------------------
+        // EVITAR INFORMACIÓN DUPLICADA
+        // ---------------------------------------------
+
+        bool newInformation =
+            savedQuestions.Add(selectedQuestion);
+
+        if (!newInformation)
+        {
+            if (hudController != null)
+            {
+                hudController.ShowWarningAlert(
+                    "Esta información ya fue registrada."
+                );
+            }
+
+            SetResponse(
+                "Esta respuesta ya se encuentra registrada."
+            );
+
+            selectedQuestion = 0;
+
+            return;
+        }
+
+        // ---------------------------------------------
+        // GUARDADO CORRECTO
+        // ---------------------------------------------
 
         UpdateRegisteredData();
 
         SetResponse(
-            "Respuesta registrada. Seleccione otra pregunta para continuar."
+            "Respuesta registrada. " +
+            "Seleccione otra pregunta para continuar."
         );
+
+        if (hudController != null)
+        {
+            hudController.ShowSuccessAlert(
+                "Información clínica registrada correctamente."
+            );
+        }
 
         selectedQuestion = 0;
 
@@ -156,9 +243,9 @@ public class InterviewController : MonoBehaviour
         );
     }
 
-    // -----------------------------------------------------
-    // ACTUALIZAR DATOS REGISTRADOS
-    // -----------------------------------------------------
+    // =====================================================
+    // ACTUALIZAR INFORMACIÓN REGISTRADA
+    // =====================================================
 
     private void UpdateRegisteredData()
     {
@@ -212,9 +299,9 @@ public class InterviewController : MonoBehaviour
         registeredDataText.text = data;
     }
 
-    // -----------------------------------------------------
-    // CAMBIAR RESPUESTA DEL PACIENTE
-    // -----------------------------------------------------
+    // =====================================================
+    // MOSTRAR RESPUESTA DEL PACIENTE
+    // =====================================================
 
     private void SetResponse(string response)
     {
@@ -224,35 +311,56 @@ public class InterviewController : MonoBehaviour
         }
     }
 
-    // -----------------------------------------------------
+    // =====================================================
     // CONTINUAR A VALORACIÓN CLÍNICA
-    // -----------------------------------------------------
+    // =====================================================
 
     public void ContinueToClinicalAssessment()
     {
+        // ---------------------------------------------
+        // ERROR 2:
+        // Intentar continuar sin registrar información.
+        // ---------------------------------------------
+
+        if (savedQuestions.Count == 0)
+        {
+            Debug.LogWarning(
+                "No puede continuar sin registrar información clínica."
+            );
+
+            if (hudController != null)
+            {
+                hudController.ShowErrorAlert(
+                    "Registre información clínica antes de continuar."
+                );
+            }
+
+            return;
+        }
+
+        // ---------------------------------------------
+        // CONTINUAR CORRECTAMENTE
+        // ---------------------------------------------
+
         Debug.Log(
             "CONTINUAR: pasando a Valoración Clínica / Signos Vitales."
         );
 
-        // Ocultar la ficha anterior por seguridad.
         if (patientInfoPanel != null)
         {
             patientInfoPanel.SetActive(false);
         }
 
-        // Ocultar la conversación.
         if (interviewPanel != null)
         {
             interviewPanel.SetActive(false);
         }
 
-        // Ocultar datos registrados.
         if (registeredDataPanel != null)
         {
             registeredDataPanel.SetActive(false);
         }
 
-        // Mostrar la siguiente etapa.
         if (clinicalAssessmentPanel != null)
         {
             clinicalAssessmentPanel.SetActive(true);
