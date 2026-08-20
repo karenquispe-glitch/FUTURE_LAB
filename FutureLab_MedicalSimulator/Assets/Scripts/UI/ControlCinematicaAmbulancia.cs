@@ -61,4 +61,5 @@ public class ControlCinematicaAmbulancia : MonoBehaviour
         cargandoEscena = true;
         SceneManager.LoadScene(escenaSiguiente);
     }
+
 }

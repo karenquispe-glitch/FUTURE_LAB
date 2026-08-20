@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Hospital_Base.unity
     guid: 1786a20e2d2af9047b77e812a8528a04
+  - enabled: 1
+    path: Assets/Scenes/CinematicaAmbulancia.unity
+    guid: a5283483088503341899eb1ff1a3bf6d
   m_configObjects: {}
