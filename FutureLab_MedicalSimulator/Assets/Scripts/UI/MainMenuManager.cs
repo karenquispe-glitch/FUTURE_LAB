@@ -21,6 +21,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartSimulation()
     {
-        SceneManager.LoadScene("Hospital_Base");
+        SceneManager.LoadScene("CinematicaAmbulancia");
     }
 }
