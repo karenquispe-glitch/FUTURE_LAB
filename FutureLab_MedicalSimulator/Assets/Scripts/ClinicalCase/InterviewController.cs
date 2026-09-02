@@ -97,6 +97,7 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 1
+    // ¿Qué molestias son las que más le preocupan actualmente?
     // =====================================================
 
     public void ShowAnswer1()
@@ -104,14 +105,15 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 1;
 
         SetResponse(
-            "Desde hace un tiempo tengo dolor de cabeza, " +
-            "mareos y, después de bañarme con agua tibia, " +
-            "me da mucha picazón en todo el cuerpo."
+            "Lo que más me preocupa son los dolores de cabeza, " +
+            "los mareos y una picazón muy intensa que aparece algunas veces."
         );
     }
 
     // =====================================================
     // PREGUNTA 2
+    // ¿Hay alguna situación en la que sus molestias
+    // aparezcan o empeoren?
     // =====================================================
 
     public void ShowAnswer2()
@@ -119,13 +121,15 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 2;
 
         SetResponse(
-            "Las molestias comenzaron hace varios meses " +
-            "y últimamente se han vuelto más frecuentes."
+            "Sí. La picazón se vuelve mucho más intensa " +
+            "después de bañarme con agua tibia."
         );
     }
 
     // =====================================================
     // PREGUNTA 3
+    // ¿Ha presentado visión borrosa, zumbidos,
+    // hormigueos o ardor en manos o pies?
     // =====================================================
 
     public void ShowAnswer3()
@@ -133,14 +137,15 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 3;
 
         SetResponse(
-            "La picazón aparece principalmente después " +
-            "de bañarme con agua tibia y puede durar " +
-            "varios minutos."
+            "A veces veo un poco borroso cuando tengo mucho mareo " +
+            "y en algunas ocasiones siento calor o ardor en los pies."
         );
     }
 
     // =====================================================
     // PREGUNTA 4
+    // ¿Ha tenido hinchazón dolorosa de una pierna,
+    // dolor en el pecho o algún episodio de trombosis?
     // =====================================================
 
     public void ShowAnswer4()
@@ -148,12 +153,16 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 4;
 
         SetResponse(
-            "No, no he tenido dificultad para respirar."
+            "No. Nunca me han diagnosticado una trombosis " +
+            "y tampoco he tenido hinchazón dolorosa en las piernas " +
+            "ni dolor en el pecho."
         );
     }
 
     // =====================================================
     // PREGUNTA 5
+    // ¿Fuma o está expuesto frecuentemente
+    // a humo o combustión?
     // =====================================================
 
     public void ShowAnswer5()
@@ -161,8 +170,86 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 5;
 
         SetResponse(
-            "No he perdido el conocimiento, aunque algunas " +
-            "veces el mareo ha sido bastante intenso."
+            "No fumo y tampoco estoy expuesto habitualmente " +
+            "a humo, combustión o monóxido de carbono."
+        );
+    }
+
+    // =====================================================
+    // PREGUNTA 6
+    // ¿Dónde vive habitualmente y desde hace cuánto tiempo?
+    // =====================================================
+
+    public void ShowAnswer6()
+    {
+        selectedQuestion = 6;
+
+        SetResponse(
+            "Vivo habitualmente en La Paz desde hace varios años."
+        );
+    }
+
+    // =====================================================
+    // PREGUNTA 7
+    // ¿Ronca mucho, deja de respirar mientras duerme
+    // o tiene mucha somnolencia durante el día?
+    // =====================================================
+
+    public void ShowAnswer7()
+    {
+        selectedQuestion = 7;
+
+        SetResponse(
+            "No que yo sepa. Nadie me ha dicho que deje de respirar " +
+            "mientras duermo y no suelo tener demasiada somnolencia " +
+            "durante el día."
+        );
+    }
+
+    // =====================================================
+    // PREGUNTA 8
+    // ¿Utiliza testosterona, eritropoyetina,
+    // esteroides anabólicos o tratamientos hormonales?
+    // =====================================================
+
+    public void ShowAnswer8()
+    {
+        selectedQuestion = 8;
+
+        SetResponse(
+            "No utilizo testosterona, eritropoyetina, " +
+            "esteroides anabólicos ni tratamientos hormonales."
+        );
+    }
+
+    // =====================================================
+    // PREGUNTA 9
+    // ¿Toma diuréticos o ha tenido deshidratación
+    // importante recientemente?
+    // =====================================================
+
+    public void ShowAnswer9()
+    {
+        selectedQuestion = 9;
+
+        SetResponse(
+            "No tomo diuréticos y tampoco he tenido vómitos, " +
+            "diarrea o deshidratación importante recientemente."
+        );
+    }
+
+    // =====================================================
+    // PREGUNTA 10 - DISTRACTORA
+    // ¿Ha presentado náuseas, acidez o molestias digestivas?
+    // =====================================================
+
+    public void ShowAnswer10()
+    {
+        selectedQuestion = 10;
+
+        SetResponse(
+            "No. No he tenido náuseas, acidez ni molestias " +
+            "digestivas importantes recientemente."
         );
     }
 
@@ -219,7 +306,7 @@ public class InterviewController : MonoBehaviour
         }
 
         // ---------------------------------------------
-        // GUARDADO CORRECTO
+        // GUARDADO
         // ---------------------------------------------
 
         UpdateRegisteredData();
@@ -232,14 +319,14 @@ public class InterviewController : MonoBehaviour
         if (hudController != null)
         {
             hudController.ShowSuccessAlert(
-                "Información clínica registrada correctamente."
+                "Información clínica registrada."
             );
         }
 
         selectedQuestion = 0;
 
         Debug.Log(
-            "Información clínica registrada correctamente."
+            "Información clínica registrada."
         );
     }
 
@@ -264,36 +351,79 @@ public class InterviewController : MonoBehaviour
 
         string data = "";
 
+        // PREGUNTA 1
         if (savedQuestions.Contains(1))
         {
             data +=
                 "• Cefalea recurrente\n" +
                 "• Mareos\n" +
-                "• Prurito posterior al baño\n";
+                "• Prurito intenso\n";
         }
 
+        // PREGUNTA 2
         if (savedQuestions.Contains(2))
         {
             data +=
-                "• Evolución de varios meses\n";
+                "• Prurito posterior al baño con agua tibia\n";
         }
 
+        // PREGUNTA 3
         if (savedQuestions.Contains(3))
         {
             data +=
-                "• Prurito desencadenado por agua tibia\n";
+                "• Visión borrosa ocasional\n" +
+                "• Ardor o calor en los pies\n";
         }
 
+        // PREGUNTA 4
         if (savedQuestions.Contains(4))
         {
             data +=
-                "• Niega dificultad respiratoria\n";
+                "• Sin antecedente trombótico conocido\n";
         }
 
+        // PREGUNTA 5
         if (savedQuestions.Contains(5))
         {
             data +=
-                "• Niega pérdida de conocimiento\n";
+                "• Niega tabaquismo\n" +
+                "• Niega exposición habitual a humo o combustión\n";
+        }
+
+        // PREGUNTA 6
+        if (savedQuestions.Contains(6))
+        {
+            data +=
+                "• Residencia habitual: La Paz\n";
+        }
+
+        // PREGUNTA 7
+        if (savedQuestions.Contains(7))
+        {
+            data +=
+                "• Sin datos claros de apnea del sueño\n";
+        }
+
+        // PREGUNTA 8
+        if (savedQuestions.Contains(8))
+        {
+            data +=
+                "• Niega testosterona, eritropoyetina o anabólicos\n";
+        }
+
+        // PREGUNTA 9
+        if (savedQuestions.Contains(9))
+        {
+            data +=
+                "• Niega diuréticos\n" +
+                "• Niega deshidratación reciente\n";
+        }
+
+        // PREGUNTA 10 - DISTRACTORA
+        if (savedQuestions.Contains(10))
+        {
+            data +=
+                "• Niega síntomas digestivos relevantes\n";
         }
 
         registeredDataText.text = data;
@@ -318,7 +448,7 @@ public class InterviewController : MonoBehaviour
     public void ContinueToClinicalAssessment()
     {
         // ---------------------------------------------
-        // ERROR 2:
+        // ERROR:
         // Intentar continuar sin registrar información.
         // ---------------------------------------------
 

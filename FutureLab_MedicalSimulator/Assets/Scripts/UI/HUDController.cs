@@ -29,6 +29,7 @@ public class HUDController : MonoBehaviour
     // =====================================================
 
     [Header("Menú de pausa")]
+    [SerializeField] private GameObject pauseButton;
     [SerializeField] private GameObject pauseMenuPanel;
     [SerializeField] private GameObject pauseMainMenu;
     [SerializeField] private GameObject settingsPanel;
@@ -88,6 +89,13 @@ public class HUDController : MonoBehaviour
 
         caseStarted = false;
         gamePaused = false;
+
+        // El botón PAUSA no debe verse
+        // antes de comenzar el caso.
+        if (pauseButton != null)
+        {
+            pauseButton.SetActive(false);
+        }
 
         // Ocultar menú de pausa al iniciar.
         if (pauseMenuPanel != null)
@@ -176,6 +184,13 @@ public class HUDController : MonoBehaviour
 
         timerRunning = true;
         caseStarted = true;
+
+        // Una vez iniciado el caso,
+        // PAUSA ya tiene sentido.
+        if (pauseButton != null)
+        {
+            pauseButton.SetActive(true);
+        }
 
         UpdateTimerText();
 
@@ -438,6 +453,12 @@ public class HUDController : MonoBehaviour
         gamePaused = false;
         timerRunning = false;
         caseStarted = false;
+
+        // Ocultar PAUSA.
+        if (pauseButton != null)
+        {
+            pauseButton.SetActive(false);
+        }
 
         // Cerrar configuración.
         if (settingsPanel != null)
