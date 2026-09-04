@@ -3,11 +3,19 @@
   "WorkspaceRootPath": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|d:\\future_lab\\futurelab_medicalsimulator\\assets\\scripts\\paciente\\patientanimationinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\paciente\\patientanimationinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|d:\\future_lab\\futurelab_medicalsimulator\\assets\\scripts\\clinicalcase\\patientinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\patientinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\assets\\scripts\\ui\\mainmenumanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\mainmenumanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|d:\\future_lab\\futurelab_medicalsimulator\\assets\\scripts\\ui\\controlcinematicaambulancia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\assets\\scripts\\ui\\controlcinematicaambulancia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\controlcinematicaambulancia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -27,6 +35,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "PatientAnimationInteraction.cs",
+              "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\paciente\\PatientAnimationInteraction.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\paciente\\PatientAnimationInteraction.cs",
+              "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\paciente\\PatientAnimationInteraction.cs",
+              "RelativeToolTip": "Assets\\Scripts\\paciente\\PatientAnimationInteraction.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAswDIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-04T19:55:42.337Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PatientInteraction.cs",
+              "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\ClinicalCase\\PatientInteraction.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\PatientInteraction.cs",
+              "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\ClinicalCase\\PatientInteraction.cs",
+              "RelativeToolTip": "Assets\\Scripts\\ClinicalCase\\PatientInteraction.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAYwC8AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-04T19:51:01.476Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "MainMenuManager.cs",
               "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\MainMenuManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\MainMenuManager.cs",
@@ -34,12 +68,11 @@
               "RelativeToolTip": "Assets\\Scripts\\UI\\MainMenuManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-20T15:41:23.186Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-20T15:41:23.186Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "ControlCinematicaAmbulancia.cs",
               "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\ControlCinematicaAmbulancia.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\ControlCinematicaAmbulancia.cs",
@@ -47,12 +80,11 @@
               "RelativeToolTip": "Assets\\Scripts\\UI\\ControlCinematicaAmbulancia.cs",
               "ViewState": "AgIAABwAAAAAAAAAAIAzwDUAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-17T21:09:50.151Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-17T21:09:50.151Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "InterviewController.cs",
               "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\InterviewController.cs",

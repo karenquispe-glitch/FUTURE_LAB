@@ -15,6 +15,7 @@ public class PatientInteraction : MonoBehaviour
     [Min(1f)]
     private float interactionDistance = 8f;
 
+
     [SerializeField]
     [Min(0.05f)]
     private float detectionRadius = 0.35f;
