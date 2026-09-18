@@ -31,6 +31,7 @@ public class HUDController : MonoBehaviour
     [Header("Menú de pausa")]
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private GameObject pauseMenuPanel;
+    [SerializeField] private GameObject saveGamePanel;
     [SerializeField] private GameObject pauseMainMenu;
     [SerializeField] private GameObject settingsPanel;
 
@@ -41,6 +42,19 @@ public class HUDController : MonoBehaviour
     [Header("Control del jugador")]
     [SerializeField] private FirstPersonController firstPersonController;
     [SerializeField] private StarterAssetsInputs starterAssetsInputs;
+
+    // =====================================================
+    // GUARDADO
+    // =====================================================
+
+    [Header("Guardado de partida")]
+    [SerializeField] private int caseID = 1;
+
+    [SerializeField] private string currentPhase = "Entrevista";
+
+    [SerializeField] private Transform playerTransform;
+
+    [SerializeField] private InterviewController interviewController;
 
     // =====================================================
     // VARIABLES DEL CONTADOR
@@ -90,6 +104,14 @@ public class HUDController : MonoBehaviour
         caseStarted = false;
         gamePaused = false;
 
+        // Si no asignamos manualmente el jugador,
+        // usamos el transform del FirstPersonController.
+        if (playerTransform == null &&
+            firstPersonController != null)
+        {
+            playerTransform = firstPersonController.transform;
+        }
+
         // El botón PAUSA no debe verse
         // antes de comenzar el caso.
         if (pauseButton != null)
@@ -101,6 +123,12 @@ public class HUDController : MonoBehaviour
         if (pauseMenuPanel != null)
         {
             pauseMenuPanel.SetActive(false);
+        }
+
+        // Ocultar ventana de guardado al iniciar.
+        if (saveGamePanel != null)
+        {
+            saveGamePanel.SetActive(false);
         }
 
         // Preparar menú principal de pausa.
@@ -269,25 +297,29 @@ public class HUDController : MonoBehaviour
                 starterAssetsInputs.cursorInputForLook;
         }
 
-        // Mostrar menú de pausa.
+        // Mostrar menú pausa.
         if (pauseMenuPanel != null)
         {
             pauseMenuPanel.SetActive(true);
         }
 
-        // Mostrar botones principales.
         if (pauseMainMenu != null)
         {
             pauseMainMenu.SetActive(true);
         }
 
-        // Configuración debe empezar cerrada.
         if (settingsPanel != null)
         {
             settingsPanel.SetActive(false);
         }
 
-        // Desactivar movimiento del jugador.
+        // Cerrar ventana guardar.
+        if (saveGamePanel != null)
+        {
+            saveGamePanel.SetActive(false);
+        }
+
+        // Desactivar jugador.
         if (firstPersonController != null)
         {
             firstPersonController.enabled = false;
@@ -305,11 +337,9 @@ public class HUDController : MonoBehaviour
             starterAssetsInputs.cursorInputForLook = false;
         }
 
-        // Liberar mouse.
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Congelar simulación.
         Time.timeScale = 0f;
 
         Debug.Log("JUEGO EN PAUSA.");
@@ -335,6 +365,12 @@ public class HUDController : MonoBehaviour
         if (settingsPanel != null)
         {
             settingsPanel.SetActive(false);
+        }
+
+        // Cerrar ventana de guardado.
+        if (saveGamePanel != null)
+        {
+            saveGamePanel.SetActive(false);
         }
 
         // Preparar nuevamente el menú principal.
@@ -466,6 +502,12 @@ public class HUDController : MonoBehaviour
             settingsPanel.SetActive(false);
         }
 
+        // Cerrar ventana de guardado.
+        if (saveGamePanel != null)
+        {
+            saveGamePanel.SetActive(false);
+        }
+
         // Cerrar menú principal de pausa.
         if (pauseMainMenu != null)
         {
@@ -495,16 +537,188 @@ public class HUDController : MonoBehaviour
 
     public void ExitGame()
     {
-        // Restaurar el tiempo por seguridad.
+        // Abrir ventana de guardado.
+        if (saveGamePanel != null)
+        {
+            saveGamePanel.SetActive(true);
+        }
+
+        // Ocultar menú de pausa.
+        if (pauseMenuPanel != null)
+        {
+            pauseMenuPanel.SetActive(false);
+        }
+
+        Debug.Log("ABRIENDO VENTANA DE GUARDADO.");
+    }
+
+    // =====================================================
+    // CONTINUAR DESDE VENTANA DE GUARDADO
+    // =====================================================
+
+    public void ContinueGame()
+    {
+        if (saveGamePanel != null)
+        {
+            saveGamePanel.SetActive(false);
+        }
+
+        if (pauseMenuPanel != null)
+        {
+            pauseMenuPanel.SetActive(false);
+        }
+
         Time.timeScale = 1f;
 
-        Debug.Log("SALIENDO DEL SIMULADOR.");
+        gamePaused = false;
+        timerRunning = true;
 
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        // Restaurar jugador.
+        if (firstPersonController != null)
+        {
+            firstPersonController.enabled = true;
+        }
+
+        if (starterAssetsInputs != null)
+        {
+            starterAssetsInputs.cursorLocked = true;
+            starterAssetsInputs.cursorInputForLook = true;
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        Debug.Log("CONTINUANDO CASO CLÍNICO.");
+    }
+
+    // =====================================================
+    // SALIR SIN GUARDAR
+    // =====================================================
+
+    public void ExitWithoutSave()
+    {
+        Debug.Log("SALIENDO SIN GUARDAR.");
+
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    // =====================================================
+    // GUARDAR Y SALIR
+    // =====================================================
+
+    public void SaveAndExit()
+    {
+        Debug.Log("GUARDANDO PARTIDA...");
+
+        // ---------------------------------------------
+        // Comprobar SaveManager
+        // ---------------------------------------------
+
+        if (SaveManager.Instance == null)
+        {
+            Debug.LogError(
+                "HUDController: no existe un SaveManager activo."
+            );
+
+            return;
+        }
+
+        // ---------------------------------------------
+        // Crear datos de la partida
+        // ---------------------------------------------
+
+        SaveData data = new SaveData();
+
+        // Información general.
+        data.sceneName = "Hospital_Base";
+        data.caseID = caseID;
+
+        // Estado.
+        data.caseStarted = caseStarted;
+        data.currentPhase = currentPhase;
+
+        // Tiempo.
+        data.elapsedTime = elapsedTime;
+
+        // ---------------------------------------------
+        // Guardar progreso de la entrevista
+        // ---------------------------------------------
+
+        if (interviewController != null)
+        {
+            data.answeredQuestions =
+                interviewController.GetSavedQuestions();
+
+            // Guardar si la entrevista ya fue finalizada.
+            data.interviewCompleted =
+                interviewController.IsInterviewCompleted();
+        }
+
+        // ---------------------------------------------
+        // Guardar posición del jugador
+        // ---------------------------------------------
+
+        if (playerTransform != null)
+        {
+            data.playerPosX =
+                playerTransform.position.x;
+
+            data.playerPosY =
+                playerTransform.position.y;
+
+            data.playerPosZ =
+                playerTransform.position.z;
+
+            data.playerRotX =
+                playerTransform.eulerAngles.x;
+
+            data.playerRotY =
+                playerTransform.eulerAngles.y;
+
+            data.playerRotZ =
+                playerTransform.eulerAngles.z;
+        }
+
+        // ---------------------------------------------
+        // Guardar partida
+        // ---------------------------------------------
+
+        data.saveDate =
+            System.DateTime.Now.ToString(
+                "yyyy-MM-dd HH:mm:ss"
+            );
+
+        SaveManager.Instance.SaveGame(data);
+
+        // ---------------------------------------------
+        // Salir al menú
+        // ---------------------------------------------
+
+        Time.timeScale = 1f;
+
+        gamePaused = false;
+        timerRunning = false;
+
+        if (pauseButton != null)
+        {
+            pauseButton.SetActive(false);
+        }
+
+        if (saveGamePanel != null)
+        {
+            saveGamePanel.SetActive(false);
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        Debug.Log(
+            "PARTIDA GUARDADA. VOLVIENDO AL MENÚ PRINCIPAL."
+        );
+
+        SceneManager.LoadScene("MainMenu");
     }
 
     // =====================================================
@@ -599,4 +813,179 @@ public class HUDController : MonoBehaviour
         // al cambiar de escena o detener Play.
         Time.timeScale = 1f;
     }
+
+    // =====================================================
+    // RESTAURAR PARTIDA CARGADA
+    // =====================================================
+
+    public void RestoreLoadedGame(SaveData data)
+    {
+        if (data == null)
+        {
+            Debug.LogWarning(
+                "HUDController: no hay datos para restaurar."
+            );
+
+            return;
+        }
+
+        // Restaurar tiempo.
+        elapsedTime = data.elapsedTime;
+
+        // Restaurar estado del caso.
+        caseStarted = data.caseStarted;
+
+        // Restaurar fase.
+        currentPhase = data.currentPhase;
+
+        // El caso continúa ejecutándose.
+        gamePaused = false;
+        timerRunning = true;
+
+        // Mostrar botón PAUSA.
+        if (pauseButton != null)
+        {
+            pauseButton.SetActive(true);
+        }
+
+        // Cerrar menús.
+        if (pauseMenuPanel != null)
+        {
+            pauseMenuPanel.SetActive(false);
+        }
+
+        if (saveGamePanel != null)
+        {
+            saveGamePanel.SetActive(false);
+        }
+
+        if (pauseMainMenu != null)
+        {
+            pauseMainMenu.SetActive(false);
+        }
+
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(false);
+        }
+
+        // Restaurar contador visual.
+        UpdateTimerText();
+
+        // =====================================================
+        // RESTAURAR CONTROL DEL JUGADOR
+        // =====================================================
+
+        if (firstPersonController != null)
+        {
+            firstPersonController.enabled = true;
+        }
+
+        // =====================================================
+        // RESTAURAR MODO SEGÚN LA FASE GUARDADA
+        // =====================================================
+
+        if (currentPhase == "Entrevista" &&
+            data.interviewCompleted == false)
+        {
+            // La partida fue guardada durante la entrevista.
+            // El jugador necesita el mouse libre para continuar
+            // seleccionando las respuestas.
+
+            if (starterAssetsInputs != null)
+            {
+                starterAssetsInputs.cursorLocked = false;
+                starterAssetsInputs.cursorInputForLook = false;
+
+                starterAssetsInputs.move = Vector2.zero;
+                starterAssetsInputs.look = Vector2.zero;
+            }
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            Debug.Log(
+                "PARTIDA RESTAURADA EN ENTREVISTA. MOUSE LIBRE."
+            );
+        }
+        else
+        {
+            // La partida está en una fase normal de simulación.
+
+            if (starterAssetsInputs != null)
+            {
+                starterAssetsInputs.cursorLocked = true;
+                starterAssetsInputs.cursorInputForLook = true;
+            }
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            Debug.Log(
+                "PARTIDA RESTAURADA EN MODO SIMULACIÓN. MOUSE BLOQUEADO."
+            );
+        }
+
+        // Asegurar que el juego esté activo.
+        Time.timeScale = 1f;
+
+        Debug.Log(
+            "HUD RESTAURADO. TIEMPO: " +
+            elapsedTime +
+            " | FASE: " +
+            currentPhase
+        );
+    }
+    // =====================================================
+    // ACTUALIZAR FASE DEL CASO
+    // =====================================================
+
+    public void SetCurrentPhase(string phase)
+    {
+        currentPhase = phase;
+
+        Debug.Log(
+            "FASE ACTUALIZADA: " + currentPhase
+        );
+    }
+    // =====================================================
+    // MODO INTERFAZ
+    // =====================================================
+
+    public void SetUIInteractionMode(bool enabled)
+    {
+        if (enabled)
+        {
+            // Liberar mouse para poder interactuar
+            // con los botones de la interfaz.
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            if (starterAssetsInputs != null)
+            {
+                starterAssetsInputs.cursorLocked = false;
+                starterAssetsInputs.cursorInputForLook = false;
+
+                starterAssetsInputs.move = Vector2.zero;
+                starterAssetsInputs.look = Vector2.zero;
+            }
+
+            Debug.Log("MODO INTERFAZ ACTIVADO. MOUSE LIBRE.");
+        }
+        else
+        {
+            // Volver al modo normal de simulación.
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            if (starterAssetsInputs != null)
+            {
+                starterAssetsInputs.cursorLocked = true;
+                starterAssetsInputs.cursorInputForLook = true;
+            }
+
+            Debug.Log("MODO SIMULACIÓN ACTIVADO. MOUSE BLOQUEADO.");
+        }
+    }
+
 }
