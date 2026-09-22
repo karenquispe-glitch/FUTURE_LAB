@@ -3,28 +3,16 @@
   "WorkspaceRootPath": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|d:\\future_lab\\futurelab_medicalsimulator\\assets\\scripts\\ui\\returntomainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\returntomainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|d:\\future_lab\\futurelab_medicalsimulator\\assets\\scripts\\paciente\\patientanimationinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\paciente\\patientanimationinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\assets\\scripts\\clinicalcase\\patientinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\patientinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\assets\\scripts\\ui\\mainmenumanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\mainmenumanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\assets\\scripts\\ui\\controlcinematicaambulancia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\controlcinematicaambulancia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|d:\\future_lab\\futurelab_medicalsimulator\\assets\\scripts\\ui\\buttonsoundcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\buttonsoundcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\assets\\scripts\\clinicalcase\\interviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\interviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|d:\\future_lab\\futurelab_medicalsimulator\\assets\\scripts\\ui\\audiosettingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8AC4EA69-182D-52A0-0258-89E8E8774A52}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\audiosettingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,76 +27,41 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ReturnToMainMenu.cs",
-              "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\ReturnToMainMenu.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\ReturnToMainMenu.cs",
-              "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\ReturnToMainMenu.cs",
-              "RelativeToolTip": "Assets\\Scripts\\UI\\ReturnToMainMenu.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-04T21:44:26.4Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "PatientAnimationInteraction.cs",
-              "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\paciente\\PatientAnimationInteraction.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\paciente\\PatientAnimationInteraction.cs",
-              "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\paciente\\PatientAnimationInteraction.cs",
-              "RelativeToolTip": "Assets\\Scripts\\paciente\\PatientAnimationInteraction.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAswDIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-04T19:55:42.337Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PatientInteraction.cs",
-              "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\ClinicalCase\\PatientInteraction.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\PatientInteraction.cs",
-              "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\ClinicalCase\\PatientInteraction.cs",
-              "RelativeToolTip": "Assets\\Scripts\\ClinicalCase\\PatientInteraction.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAYwC8AAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-04T19:51:01.476Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "MainMenuManager.cs",
               "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\MainMenuManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\MainMenuManager.cs",
               "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\MainMenuManager.cs",
               "RelativeToolTip": "Assets\\Scripts\\UI\\MainMenuManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAgwBoAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-20T15:41:23.186Z"
+              "WhenOpened": "2026-08-20T15:41:23.186Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ControlCinematicaAmbulancia.cs",
-              "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\ControlCinematicaAmbulancia.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\ControlCinematicaAmbulancia.cs",
-              "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\ControlCinematicaAmbulancia.cs",
-              "RelativeToolTip": "Assets\\Scripts\\UI\\ControlCinematicaAmbulancia.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAIAzwDUAAAAoAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "AudioSettingsController.cs",
+              "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\AudioSettingsController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\AudioSettingsController.cs",
+              "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\AudioSettingsController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI\\AudioSettingsController.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAswC8AAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-17T21:09:50.151Z"
+              "WhenOpened": "2026-09-21T16:04:44.303Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "InterviewController.cs",
-              "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
-              "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
-              "RelativeToolTip": "Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
-              "ViewState": "AgIAANsAAAAAAAAAAAAswAoBAAABAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "ButtonSoundController.cs",
+              "DocumentMoniker": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\ButtonSoundController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\ButtonSoundController.cs",
+              "ToolTip": "D:\\FUTURE_LAB\\FutureLab_MedicalSimulator\\Assets\\Scripts\\UI\\ButtonSoundController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI\\ButtonSoundController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-05T20:36:17.935Z"
+              "WhenOpened": "2026-09-21T15:27:44.146Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -23,4 +23,14 @@ public class MainMenuManager : MonoBehaviour
     {
         SceneManager.LoadScene("CinematicaAmbulancia");
     }
+
+    public void SalirDelJuego()
+    {
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+    Application.Quit();
+    #endif
+    }
+
 }
