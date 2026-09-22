@@ -23,11 +23,18 @@ public class InterviewController : MonoBehaviour
     [SerializeField] private TMP_Text registeredDataText;
 
     // =====================================================
-    // ALERTAS DE DESEMPEÑO
+    // ALERTAS
     // =====================================================
 
     [Header("Sistema de alertas")]
     [SerializeField] private HUDController hudController;
+
+    // =====================================================
+    // DIAGNÓSTICO
+    // =====================================================
+
+    [Header("Diagnóstico")]
+    [SerializeField] private DiagnosisController diagnosisController;
 
     // =====================================================
     // VARIABLES
@@ -37,6 +44,11 @@ public class InterviewController : MonoBehaviour
 
     private HashSet<int> savedQuestions =
         new HashSet<int>();
+
+    // NUEVO:
+    // Indica si el participante ya terminó la entrevista
+    // presionando el botón CONTINUAR.
+    private bool interviewCompleted = false;
 
     private const string InitialMessage =
         "Seleccione una pregunta para conocer la respuesta del paciente.";
@@ -97,7 +109,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 1
-    // ¿Qué molestias son las que más le preocupan actualmente?
     // =====================================================
 
     public void ShowAnswer1()
@@ -112,8 +123,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 2
-    // ¿Hay alguna situación en la que sus molestias
-    // aparezcan o empeoren?
     // =====================================================
 
     public void ShowAnswer2()
@@ -128,8 +137,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 3
-    // ¿Ha presentado visión borrosa, zumbidos,
-    // hormigueos o ardor en manos o pies?
     // =====================================================
 
     public void ShowAnswer3()
@@ -144,8 +151,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 4
-    // ¿Ha tenido hinchazón dolorosa de una pierna,
-    // dolor en el pecho o algún episodio de trombosis?
     // =====================================================
 
     public void ShowAnswer4()
@@ -161,8 +166,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 5
-    // ¿Fuma o está expuesto frecuentemente
-    // a humo o combustión?
     // =====================================================
 
     public void ShowAnswer5()
@@ -177,7 +180,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 6
-    // ¿Dónde vive habitualmente y desde hace cuánto tiempo?
     // =====================================================
 
     public void ShowAnswer6()
@@ -191,8 +193,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 7
-    // ¿Ronca mucho, deja de respirar mientras duerme
-    // o tiene mucha somnolencia durante el día?
     // =====================================================
 
     public void ShowAnswer7()
@@ -208,8 +208,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 8
-    // ¿Utiliza testosterona, eritropoyetina,
-    // esteroides anabólicos o tratamientos hormonales?
     // =====================================================
 
     public void ShowAnswer8()
@@ -224,8 +222,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 9
-    // ¿Toma diuréticos o ha tenido deshidratación
-    // importante recientemente?
     // =====================================================
 
     public void ShowAnswer9()
@@ -240,7 +236,6 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 10 - DISTRACTORA
-    // ¿Ha presentado náuseas, acidez o molestias digestivas?
     // =====================================================
 
     public void ShowAnswer10()
@@ -259,11 +254,6 @@ public class InterviewController : MonoBehaviour
 
     public void SaveCurrentResponse()
     {
-        // ---------------------------------------------
-        // ERROR 1:
-        // Intentar guardar sin seleccionar pregunta.
-        // ---------------------------------------------
-
         if (selectedQuestion == 0)
         {
             Debug.LogWarning(
@@ -279,10 +269,6 @@ public class InterviewController : MonoBehaviour
 
             return;
         }
-
-        // ---------------------------------------------
-        // EVITAR INFORMACIÓN DUPLICADA
-        // ---------------------------------------------
 
         bool newInformation =
             savedQuestions.Add(selectedQuestion);
@@ -304,10 +290,6 @@ public class InterviewController : MonoBehaviour
 
             return;
         }
-
-        // ---------------------------------------------
-        // GUARDADO
-        // ---------------------------------------------
 
         UpdateRegisteredData();
 
@@ -351,7 +333,6 @@ public class InterviewController : MonoBehaviour
 
         string data = "";
 
-        // PREGUNTA 1
         if (savedQuestions.Contains(1))
         {
             data +=
@@ -360,14 +341,12 @@ public class InterviewController : MonoBehaviour
                 "• Prurito intenso\n";
         }
 
-        // PREGUNTA 2
         if (savedQuestions.Contains(2))
         {
             data +=
                 "• Prurito posterior al baño con agua tibia\n";
         }
 
-        // PREGUNTA 3
         if (savedQuestions.Contains(3))
         {
             data +=
@@ -375,14 +354,12 @@ public class InterviewController : MonoBehaviour
                 "• Ardor o calor en los pies\n";
         }
 
-        // PREGUNTA 4
         if (savedQuestions.Contains(4))
         {
             data +=
                 "• Sin antecedente trombótico conocido\n";
         }
 
-        // PREGUNTA 5
         if (savedQuestions.Contains(5))
         {
             data +=
@@ -390,28 +367,24 @@ public class InterviewController : MonoBehaviour
                 "• Niega exposición habitual a humo o combustión\n";
         }
 
-        // PREGUNTA 6
         if (savedQuestions.Contains(6))
         {
             data +=
                 "• Residencia habitual: La Paz\n";
         }
 
-        // PREGUNTA 7
         if (savedQuestions.Contains(7))
         {
             data +=
                 "• Sin datos claros de apnea del sueño\n";
         }
 
-        // PREGUNTA 8
         if (savedQuestions.Contains(8))
         {
             data +=
                 "• Niega testosterona, eritropoyetina o anabólicos\n";
         }
 
-        // PREGUNTA 9
         if (savedQuestions.Contains(9))
         {
             data +=
@@ -419,7 +392,6 @@ public class InterviewController : MonoBehaviour
                 "• Niega deshidratación reciente\n";
         }
 
-        // PREGUNTA 10 - DISTRACTORA
         if (savedQuestions.Contains(10))
         {
             data +=
@@ -442,16 +414,11 @@ public class InterviewController : MonoBehaviour
     }
 
     // =====================================================
-    // CONTINUAR A VALORACIÓN CLÍNICA
+    // CONTINUAR A DIAGNÓSTICO
     // =====================================================
 
     public void ContinueToClinicalAssessment()
     {
-        // ---------------------------------------------
-        // ERROR:
-        // Intentar continuar sin registrar información.
-        // ---------------------------------------------
-
         if (savedQuestions.Count == 0)
         {
             Debug.LogWarning(
@@ -468,13 +435,20 @@ public class InterviewController : MonoBehaviour
             return;
         }
 
-        // ---------------------------------------------
-        // CONTINUAR CORRECTAMENTE
-        // ---------------------------------------------
+        // =================================================
+        // LA ENTREVISTA HA TERMINADO
+        // =================================================
 
-        Debug.Log(
-            "CONTINUAR: pasando a Valoración Clínica / Signos Vitales."
-        );
+        interviewCompleted = true;
+
+        if (hudController != null)
+        {
+            hudController.SetCurrentPhase("Diagnóstico");
+        }
+
+        // =================================================
+        // CERRAR VENTANAS DE LA ENTREVISTA
+        // =================================================
 
         if (patientInfoPanel != null)
         {
@@ -491,15 +465,135 @@ public class InterviewController : MonoBehaviour
             registeredDataPanel.SetActive(false);
         }
 
-        if (clinicalAssessmentPanel != null)
+        // =================================================
+        // ABRIR VENTANA DE DIAGNÓSTICO
+        // =================================================
+
+        if (diagnosisController != null)
         {
-            clinicalAssessmentPanel.SetActive(true);
+            diagnosisController.OpenDiagnosis();
+
+            Debug.Log(
+                "ENTREVISTA FINALIZADA. PASANDO A DIAGNÓSTICO."
+            );
         }
         else
         {
             Debug.LogError(
-                "InterviewController: falta asignar ClinicalAssessmentPanel."
+                "InterviewController: falta asignar DiagnosisController."
             );
         }
+    }
+
+    // =====================================================
+    // GUARDADO DE PROGRESO
+    // =====================================================
+
+    public List<int> GetSavedQuestions()
+    {
+        return new List<int>(savedQuestions);
+    }
+
+    // =====================================================
+    // SABER SI LA ENTREVISTA TERMINÓ
+    // =====================================================
+
+    public bool IsInterviewCompleted()
+    {
+        return interviewCompleted;
+    }
+
+    // =====================================================
+    // RESTAURAR ENTREVISTA
+    // =====================================================
+
+    public void RestoreInterviewState(
+        List<int> questions,
+        bool completed
+    )
+    {
+        savedQuestions.Clear();
+
+        if (questions != null)
+        {
+            foreach (int question in questions)
+            {
+                savedQuestions.Add(question);
+            }
+        }
+
+        interviewCompleted = completed;
+
+        selectedQuestion = 0;
+
+        UpdateRegisteredData();
+
+        // =================================================
+        // SI NO TERMINÓ LA ENTREVISTA
+        // =================================================
+
+        if (!interviewCompleted)
+        {
+            if (patientInfoPanel != null)
+            {
+                patientInfoPanel.SetActive(false);
+            }
+
+            if (clinicalAssessmentPanel != null)
+            {
+                clinicalAssessmentPanel.SetActive(false);
+            }
+
+            if (interviewPanel != null)
+            {
+                interviewPanel.SetActive(true);
+            }
+
+            if (registeredDataPanel != null)
+            {
+                registeredDataPanel.SetActive(true);
+            }
+
+            SetResponse(InitialMessage);
+
+            // IMPORTANTE:
+            // La entrevista es una interfaz.
+            // Liberamos el mouse para poder seleccionar
+            // las preguntas nuevamente.
+            if (hudController != null)
+            {
+                hudController.SetUIInteractionMode(true);
+            }
+
+            // Forzar nuevamente el estado de interfaz.
+            // Esto evita que el cursor quede bloqueado
+            // después de restaurar la partida.
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+
+            Debug.Log(
+                "ENTREVISTA RESTAURADA. " +
+                "LA ENTREVISTA AÚN NO HABÍA TERMINADO."
+            );
+        }
+        else
+        {
+            Debug.Log(
+                "ENTREVISTA RESTAURADA COMO FINALIZADA."
+            );
+        }
+    }
+
+    // =====================================================
+    // COMPATIBILIDAD
+    // =====================================================
+
+    public void RestoreSavedQuestions(List<int> questions)
+    {
+        RestoreInterviewState(
+            questions,
+            interviewCompleted
+        );
     }
 }

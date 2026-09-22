@@ -126,7 +126,8 @@
               "RelativeToolTip": "Assets\\Scripts\\UI\\ControlCinematicaAmbulancia.cs",
               "ViewState": "AgIAABwAAAAAAAAAAIAzwDUAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-17T21:09:50.151Z"
+              "WhenOpened": "2026-08-17T21:09:50.151Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -138,7 +139,8 @@
               "RelativeToolTip": "Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
               "ViewState": "AgIAANsAAAAAAAAAAAAswAoBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-05T20:36:17.935Z"
+              "WhenOpened": "2026-08-05T20:36:17.935Z",
+              "EditorCaption": ""
             }
           ]
         }
