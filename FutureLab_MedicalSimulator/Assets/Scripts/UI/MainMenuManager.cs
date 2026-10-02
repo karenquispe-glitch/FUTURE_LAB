@@ -11,6 +11,9 @@ public class MainMenuManager : MonoBehaviour
     [Header("Botón Continuar")]
     public Button continueButton;
 
+    [Header("Confirmación de nueva partida")]
+    public GameObject confirmNewGamePanel;
+
     // =====================================================
     // PARTIDA PENDIENTE DE CARGAR
     // =====================================================
@@ -23,6 +26,12 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        // La confirmación debe comenzar cerrada.
+        if (confirmNewGamePanel != null)
+        {
+            confirmNewGamePanel.SetActive(false);
+        }
+
         UpdateContinueButton();
     }
 
@@ -89,22 +98,61 @@ public class MainMenuManager : MonoBehaviour
     }
 
     // =====================================================
-    // INICIAR NUEVA SIMULACIÓN
+    // SOLICITAR NUEVA SIMULACIÓN
     // =====================================================
 
     public void StartSimulation()
     {
-        // Una partida nueva no debe utilizar datos anteriores.
+        // Si existe una partida guardada, pedir confirmación
+        // antes de eliminarla.
+        if (
+            SaveManager.Instance != null &&
+            SaveManager.Instance.HasSavedGame()
+        )
+        {
+            if (confirmNewGamePanel != null)
+            {
+                confirmNewGamePanel.SetActive(true);
+
+                Debug.Log(
+                    "SOLICITANDO CONFIRMACIÓN PARA REEMPLAZAR LA PARTIDA."
+                );
+            }
+            else
+            {
+                Debug.LogError(
+                    "MainMenuManager: falta asignar Confirm New Game Panel."
+                );
+            }
+
+            return;
+        }
+
+        // Si no existe una partida guardada,
+        // iniciar directamente.
+        ConfirmStartNewGame();
+    }
+
+    // =====================================================
+    // CONFIRMAR NUEVA SIMULACIÓN
+    // =====================================================
+
+    public void ConfirmStartNewGame()
+    {
+        // No utilizar información cargada anteriormente.
         pendingSaveData = null;
 
-        // Eliminar cualquier partida anterior.
+        // Eliminar la partida anterior.
         if (SaveManager.Instance != null)
         {
-            SaveManager.Instance.DeleteSave();
+            if (SaveManager.Instance.HasSavedGame())
+            {
+                SaveManager.Instance.DeleteSave();
 
-            Debug.Log(
-                "PARTIDA ANTERIOR ELIMINADA."
-            );
+                Debug.Log(
+                    "PARTIDA ANTERIOR ELIMINADA."
+                );
+            }
         }
         else
         {
@@ -113,12 +161,33 @@ public class MainMenuManager : MonoBehaviour
             );
         }
 
+        if (confirmNewGamePanel != null)
+        {
+            confirmNewGamePanel.SetActive(false);
+        }
+
         Debug.Log(
             "INICIANDO NUEVA SIMULACIÓN."
         );
 
         SceneManager.LoadScene(
             "CinematicaAmbulancia"
+        );
+    }
+
+    // =====================================================
+    // CANCELAR NUEVA SIMULACIÓN
+    // =====================================================
+
+    public void CancelStartNewGame()
+    {
+        if (confirmNewGamePanel != null)
+        {
+            confirmNewGamePanel.SetActive(false);
+        }
+
+        Debug.Log(
+            "NUEVA SIMULACIÓN CANCELADA."
         );
     }
 
@@ -132,10 +201,6 @@ public class MainMenuManager : MonoBehaviour
             "VERIFICANDO PARTIDA GUARDADA..."
         );
 
-        // -------------------------------------------------
-        // COMPROBAR SAVEMANAGER
-        // -------------------------------------------------
-
         if (SaveManager.Instance == null)
         {
             Debug.LogError(
@@ -144,10 +209,6 @@ public class MainMenuManager : MonoBehaviour
 
             return;
         }
-
-        // -------------------------------------------------
-        // COMPROBAR SI EXISTE PARTIDA
-        // -------------------------------------------------
 
         if (!SaveManager.Instance.HasSavedGame())
         {
@@ -163,16 +224,8 @@ public class MainMenuManager : MonoBehaviour
             return;
         }
 
-        // -------------------------------------------------
-        // CARGAR PARTIDA
-        // -------------------------------------------------
-
         SaveData data =
             SaveManager.Instance.LoadGame();
-
-        // -------------------------------------------------
-        // COMPROBAR DATOS
-        // -------------------------------------------------
 
         if (data == null)
         {
@@ -187,10 +240,6 @@ public class MainMenuManager : MonoBehaviour
 
             return;
         }
-
-        // -------------------------------------------------
-        // GUARDAR DATOS TEMPORALMENTE
-        // -------------------------------------------------
 
         pendingSaveData = data;
 
@@ -222,22 +271,21 @@ public class MainMenuManager : MonoBehaviour
             )
         );
 
-        // -------------------------------------------------
-        // CARGAR ESCENARIO CLÍNICO
-        // -------------------------------------------------
-
         SceneManager.LoadScene(
             "Hospital_Base"
         );
     }
 
+    // =====================================================
+    // SALIR DEL JUEGO
+    // =====================================================
+
     public void SalirDelJuego()
     {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-    #else
-    Application.Quit();
-    #endif
+#else
+        Application.Quit();
+#endif
     }
-
 }
