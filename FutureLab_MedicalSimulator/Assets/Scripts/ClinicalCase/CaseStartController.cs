@@ -15,21 +15,56 @@ public class CaseStartController : MonoBehaviour
     [SerializeField] private FirstPersonController firstPersonController;
     [SerializeField] private StarterAssetsInputs starterAssetsInputs;
 
+    [Header("Controladores del caso")]
+    [SerializeField] private HUDController hudController;
+    [SerializeField] private ClinicalCaseFlowController caseFlowController;
+
     private void Start()
     {
-        // Mostrar la presentación inicial.
+        // =====================================================
+        // FASE INICIAL
+        // =====================================================
+
+        if (caseFlowController != null)
+        {
+            caseFlowController.GoToStart();
+        }
+
+        if (hudController != null)
+        {
+            hudController.SetCurrentPhase("Inicio");
+        }
+
+        // =====================================================
+        // MOSTRAR PRESENTACIÓN INICIAL
+        // =====================================================
+
         if (caseBriefingPanel != null)
         {
             caseBriefingPanel.SetActive(true);
         }
 
-        // Desactivar temporalmente el control del jugador.
+        // =====================================================
+        // BLOQUEAR CONTROL DEL JUGADOR
+        // =====================================================
+
         SetPlayerControl(false);
 
-        // Mostrar el cursor para poder pulsar COMENZAR.
+        // =====================================================
+        // LIBERAR CURSOR
+        // =====================================================
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        Debug.Log(
+            "CASO PREPARADO. FASE ACTUAL: INICIO."
+        );
     }
+
+    // =====================================================
+    // INICIAR CASO
+    // =====================================================
 
     public void StartCase()
     {
@@ -38,6 +73,7 @@ public class CaseStartController : MonoBehaviour
             Debug.LogError(
                 "CaseStartController: falta asignar PlayerCapsule."
             );
+
             return;
         }
 
@@ -46,22 +82,32 @@ public class CaseStartController : MonoBehaviour
             Debug.LogError(
                 "CaseStartController: falta asignar PatientApproachPoint."
             );
+
             return;
         }
 
-        // Desactivar temporalmente las colisiones.
+        // =====================================================
+        // DESACTIVAR COLISIONES TEMPORALMENTE
+        // =====================================================
+
         if (characterController != null)
         {
             characterController.enabled = false;
         }
 
-        // Llevar al jugador frente al paciente.
+        // =====================================================
+        // TELETRANSPORTAR AL JUGADOR FRENTE AL PACIENTE
+        // =====================================================
+
         player.SetPositionAndRotation(
             patientApproachPoint.position,
             patientApproachPoint.rotation
         );
 
-        // Reiniciar la inclinación vertical de la cámara.
+        // =====================================================
+        // REINICIAR INCLINACIÓN VERTICAL DE LA CÁMARA
+        // =====================================================
+
         if (
             firstPersonController != null &&
             firstPersonController.CinemachineCameraTarget != null
@@ -73,24 +119,60 @@ public class CaseStartController : MonoBehaviour
                 .localRotation = Quaternion.identity;
         }
 
-        // Reactivar las colisiones.
+        // =====================================================
+        // REACTIVAR COLISIONES
+        // =====================================================
+
         if (characterController != null)
         {
             characterController.enabled = true;
         }
 
-        // Ocultar la presentación.
+        // =====================================================
+        // OCULTAR PRESENTACIÓN
+        // =====================================================
+
         if (caseBriefingPanel != null)
         {
             caseBriefingPanel.SetActive(false);
         }
 
-        // Activar movimiento y cámara.
+        // =====================================================
+        // CAMBIAR A FASE DE ACERCAMIENTO
+        // =====================================================
+
+        if (caseFlowController != null)
+        {
+            caseFlowController.GoToApproach();
+        }
+
+        if (hudController != null)
+        {
+            hudController.SetCurrentPhase("Acercamiento");
+
+            // Iniciar cronómetro del caso.
+            hudController.StartTimer();
+        }
+
+        // =====================================================
+        // ACTIVAR MOVIMIENTO Y CÁMARA
+        // =====================================================
+
         SetPlayerControl(true);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        Debug.Log(
+            "ATENCIÓN INICIADA. " +
+            "JUGADOR TELETRANSPORTADO AL PACIENTE. " +
+            "FASE ACTUAL: ACERCAMIENTO."
+        );
     }
+
+    // =====================================================
+    // CONTROL DEL JUGADOR
+    // =====================================================
 
     private void SetPlayerControl(bool enabled)
     {

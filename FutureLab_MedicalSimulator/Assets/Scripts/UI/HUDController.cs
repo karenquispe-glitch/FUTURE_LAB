@@ -15,6 +15,9 @@ public class HUDController : MonoBehaviour
     [Header("Contador")]
     [SerializeField] private TMP_Text timerText;
 
+    [Header("Fase actual")]
+    [SerializeField] private TMP_Text currentPhaseText;
+
     // =====================================================
     // ALERTAS DE DESEMPEÑO
     // =====================================================
@@ -50,11 +53,13 @@ public class HUDController : MonoBehaviour
     [Header("Guardado de partida")]
     [SerializeField] private int caseID = 1;
 
-    [SerializeField] private string currentPhase = "Entrevista";
+    [SerializeField] private string currentPhase = "Inicio";
 
     [SerializeField] private Transform playerTransform;
 
     [SerializeField] private InterviewController interviewController;
+
+    [SerializeField] private ClinicalCaseFlowController caseFlowController;
 
     // =====================================================
     // VARIABLES DEL CONTADOR
@@ -153,6 +158,7 @@ public class HUDController : MonoBehaviour
         Time.timeScale = 1f;
 
         UpdateTimerText();
+        UpdateCurrentPhaseText();
     }
 
     // =====================================================
@@ -635,15 +641,45 @@ public class HUDController : MonoBehaviour
         data.sceneName = "Hospital_Base";
         data.caseID = caseID;
 
-        // Estado.
-        data.caseStarted = caseStarted;
-        data.currentPhase = currentPhase;
+        // ---------------------------------------------
+        // ESTADO DEL CASO
+        // ---------------------------------------------
 
-        // Tiempo.
+        data.caseStarted = caseStarted;
+
+        // Guardar la fase real desde el controlador
+        // central del nuevo caso clínico.
+        if (caseFlowController != null)
+        {
+            data.currentPhase =
+                caseFlowController.GetCurrentPhase().ToString();
+
+            Debug.Log(
+                "GUARDANDO FASE CLÍNICA: " +
+                data.currentPhase
+            );
+        }
+        else
+        {
+            // Si todavía no está conectado en Inspector,
+            // utilizamos la fase almacenada en el HUD.
+            data.currentPhase = currentPhase;
+
+            Debug.LogWarning(
+                "HUDController: ClinicalCaseFlowController " +
+                "no asignado. Se utilizará la fase del HUD: " +
+                currentPhase
+            );
+        }
+
+        // ---------------------------------------------
+        // TIEMPO
+        // ---------------------------------------------
+
         data.elapsedTime = elapsedTime;
 
         // ---------------------------------------------
-        // Guardar progreso de la entrevista
+        // GUARDAR PROGRESO DE LA ENTREVISTA
         // ---------------------------------------------
 
         if (interviewController != null)
@@ -651,13 +687,20 @@ public class HUDController : MonoBehaviour
             data.answeredQuestions =
                 interviewController.GetSavedQuestions();
 
-            // Guardar si la entrevista ya fue finalizada.
+            // Guardar si la entrevista
+            // ya fue finalizada.
             data.interviewCompleted =
                 interviewController.IsInterviewCompleted();
         }
+        else
+        {
+            Debug.LogWarning(
+                "HUDController: InterviewController no asignado."
+            );
+        }
 
         // ---------------------------------------------
-        // Guardar posición del jugador
+        // GUARDAR POSICIÓN DEL JUGADOR
         // ---------------------------------------------
 
         if (playerTransform != null)
@@ -680,9 +723,31 @@ public class HUDController : MonoBehaviour
             data.playerRotZ =
                 playerTransform.eulerAngles.z;
         }
+        else
+        {
+            Debug.LogWarning(
+                "HUDController: Player Transform no asignado."
+            );
+        }
 
         // ---------------------------------------------
-        // Guardar partida
+        // DATOS QUE SE INTEGRARÁN POSTERIORMENTE
+        // ---------------------------------------------
+
+        // Los siguientes campos ya existen en SaveData,
+        // pero se llenarán cuando estén disponibles
+        // los controladores correspondientes:
+        //
+        // data.completedAssessments
+        // data.requestedTests
+        // data.reviewedResults
+        // data.riskAlertTriggered
+        // data.bleedingEventLevel
+        // data.provisionalDiagnosis
+        // data.score
+
+        // ---------------------------------------------
+        // FECHA DEL GUARDADO
         // ---------------------------------------------
 
         data.saveDate =
@@ -690,10 +755,14 @@ public class HUDController : MonoBehaviour
                 "yyyy-MM-dd HH:mm:ss"
             );
 
+        // ---------------------------------------------
+        // GUARDAR PARTIDA
+        // ---------------------------------------------
+
         SaveManager.Instance.SaveGame(data);
 
         // ---------------------------------------------
-        // Salir al menú
+        // SALIR AL MENÚ
         // ---------------------------------------------
 
         Time.timeScale = 1f;
@@ -837,6 +906,7 @@ public class HUDController : MonoBehaviour
 
         // Restaurar fase.
         currentPhase = data.currentPhase;
+        UpdateCurrentPhaseText();
 
         // El caso continúa ejecutándose.
         gamePaused = false;
@@ -936,6 +1006,7 @@ public class HUDController : MonoBehaviour
             currentPhase
         );
     }
+
     // =====================================================
     // ACTUALIZAR FASE DEL CASO
     // =====================================================
@@ -943,11 +1014,133 @@ public class HUDController : MonoBehaviour
     public void SetCurrentPhase(string phase)
     {
         currentPhase = phase;
+        UpdateCurrentPhaseText();
+
+        // =================================================
+        // SINCRONIZAR CON EL CONTROLADOR CENTRAL
+        // =================================================
+
+        if (caseFlowController != null)
+        {
+            string normalizedPhase = NormalizePhaseName(phase);
+
+            ClinicalCaseFlowController.ClinicalCasePhase parsedPhase;
+
+            bool validPhase = System.Enum.TryParse(
+                normalizedPhase,
+                true,
+                out parsedPhase
+            );
+
+            if (validPhase)
+            {
+                caseFlowController.SetPhase(parsedPhase);
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "HUDController: la fase '" +
+                    phase +
+                    "' no coincide con una fase del " +
+                    "ClinicalCaseFlowController."
+                );
+            }
+        }
 
         Debug.Log(
             "FASE ACTUALIZADA: " + currentPhase
         );
     }
+
+    // =====================================================
+    // ACTUALIZAR TEXTO VISUAL DE LA FASE
+    // =====================================================
+
+    private void UpdateCurrentPhaseText()
+    {
+        if (currentPhaseText == null)
+        {
+            return;
+        }
+
+        string normalizedPhase = NormalizePhaseName(currentPhase);
+
+        switch (normalizedPhase)
+        {
+            case "Inicio":
+                currentPhaseText.text = "INICIO";
+                break;
+
+            case "Acercamiento":
+                currentPhaseText.text = "ACERCAMIENTO";
+                break;
+
+            case "Entrevista":
+                currentPhaseText.text = "ENTREVISTA";
+                break;
+
+            case "Valoracion":
+                currentPhaseText.text = "VALORACIÓN";
+                break;
+
+            case "PruebasIniciales":
+                currentPhaseText.text = "PRUEBAS INICIALES";
+                break;
+
+            case "Hipotesis":
+                currentPhaseText.text = "HIPÓTESIS";
+                break;
+
+            case "Confirmacion":
+                currentPhaseText.text = "CONFIRMACIÓN";
+                break;
+
+            case "Diagnostico":
+                currentPhaseText.text = "DIAGNÓSTICO";
+                break;
+
+            case "Cierre":
+                currentPhaseText.text = "CIERRE";
+                break;
+
+            default:
+                currentPhaseText.text =
+                    string.IsNullOrWhiteSpace(currentPhase)
+                    ? "INICIO"
+                    : currentPhase.ToUpperInvariant();
+                break;
+        }
+    }
+
+    // =====================================================
+    // NORMALIZAR NOMBRE DE FASE
+    // =====================================================
+
+    private string NormalizePhaseName(string phase)
+    {
+        if (string.IsNullOrEmpty(phase))
+        {
+            return phase;
+        }
+
+        string normalized = phase.Trim();
+
+        normalized = normalized
+            .Replace("á", "a")
+            .Replace("é", "e")
+            .Replace("í", "i")
+            .Replace("ó", "o")
+            .Replace("ú", "u")
+            .Replace("Á", "A")
+            .Replace("É", "E")
+            .Replace("Í", "I")
+            .Replace("Ó", "O")
+            .Replace("Ú", "U")
+            .Replace(" ", "");
+
+        return normalized;
+    }
+
     // =====================================================
     // MODO INTERFAZ
     // =====================================================
@@ -970,7 +1163,9 @@ public class HUDController : MonoBehaviour
                 starterAssetsInputs.look = Vector2.zero;
             }
 
-            Debug.Log("MODO INTERFAZ ACTIVADO. MOUSE LIBRE.");
+            Debug.Log(
+                "MODO INTERFAZ ACTIVADO. MOUSE LIBRE."
+            );
         }
         else
         {
@@ -984,8 +1179,9 @@ public class HUDController : MonoBehaviour
                 starterAssetsInputs.cursorInputForLook = true;
             }
 
-            Debug.Log("MODO SIMULACIÓN ACTIVADO. MOUSE BLOQUEADO.");
+            Debug.Log(
+                "MODO SIMULACIÓN ACTIVADO. MOUSE BLOQUEADO."
+            );
         }
     }
-
 }

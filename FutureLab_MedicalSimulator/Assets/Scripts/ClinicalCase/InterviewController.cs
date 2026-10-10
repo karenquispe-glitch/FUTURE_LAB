@@ -30,11 +30,11 @@ public class InterviewController : MonoBehaviour
     [SerializeField] private HUDController hudController;
 
     // =====================================================
-    // DIAGNÓSTICO
+    // FLUJO DEL CASO
     // =====================================================
 
-    [Header("Diagnóstico")]
-    [SerializeField] private DiagnosisController diagnosisController;
+    [Header("Flujo del caso")]
+    [SerializeField] private ClinicalCaseFlowController caseFlowController;
 
     // =====================================================
     // VARIABLES
@@ -45,9 +45,8 @@ public class InterviewController : MonoBehaviour
     private HashSet<int> savedQuestions =
         new HashSet<int>();
 
-    // NUEVO:
-    // Indica si el participante ya terminó la entrevista
-    // presionando el botón CONTINUAR.
+    // Indica si el participante ya terminó
+    // la entrevista presionando CONTINUAR.
     private bool interviewCompleted = false;
 
     private const string InitialMessage =
@@ -116,8 +115,7 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 1;
 
         SetResponse(
-            "Lo que más me preocupa son los dolores de cabeza, " +
-            "los mareos y una picazón muy intensa que aparece algunas veces."
+            "Desde hace unas tres semanas y cada día me cuesta más caminar."
         );
     }
 
@@ -130,8 +128,7 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 2;
 
         SetResponse(
-            "Sí. La picazón se vuelve mucho más intensa " +
-            "después de bañarme con agua tibia."
+            "Sí, principalmente por las noches."
         );
     }
 
@@ -144,8 +141,7 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 3;
 
         SetResponse(
-            "A veces veo un poco borroso cuando tengo mucho mareo " +
-            "y en algunas ocasiones siento calor o ardor en los pies."
+            "Me sangran las encías y dos veces me sangró la nariz."
         );
     }
 
@@ -158,9 +154,7 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 4;
 
         SetResponse(
-            "No. Nunca me han diagnosticado una trombosis " +
-            "y tampoco he tenido hinchazón dolorosa en las piernas " +
-            "ni dolor en el pecho."
+            "Sí, sin haberme golpeado."
         );
     }
 
@@ -173,8 +167,7 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 5;
 
         SetResponse(
-            "No fumo y tampoco estoy expuesto habitualmente " +
-            "a humo, combustión o monóxido de carbono."
+            "No tomo anticoagulantes."
         );
     }
 
@@ -187,7 +180,7 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 6;
 
         SetResponse(
-            "Vivo habitualmente en La Paz desde hace varios años."
+            "No."
         );
     }
 
@@ -200,9 +193,7 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 7;
 
         SetResponse(
-            "No que yo sepa. Nadie me ha dicho que deje de respirar " +
-            "mientras duermo y no suelo tener demasiada somnolencia " +
-            "durante el día."
+            "He bajado un poco de peso y como menos."
         );
     }
 
@@ -215,13 +206,12 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 8;
 
         SetResponse(
-            "No utilizo testosterona, eritropoyetina, " +
-            "esteroides anabólicos ni tratamientos hormonales."
+            "No que yo sepa."
         );
     }
 
     // =====================================================
-    // PREGUNTA 9
+    // PREGUNTA 9 - DISTRACTORA
     // =====================================================
 
     public void ShowAnswer9()
@@ -229,22 +219,7 @@ public class InterviewController : MonoBehaviour
         selectedQuestion = 9;
 
         SetResponse(
-            "No tomo diuréticos y tampoco he tenido vómitos, " +
-            "diarrea o deshidratación importante recientemente."
-        );
-    }
-
-    // =====================================================
-    // PREGUNTA 10 - DISTRACTORA
-    // =====================================================
-
-    public void ShowAnswer10()
-    {
-        selectedQuestion = 10;
-
-        SetResponse(
-            "No. No he tenido náuseas, acidez ni molestias " +
-            "digestivas importantes recientemente."
+            "Comida habitual."
         );
     }
 
@@ -336,66 +311,59 @@ public class InterviewController : MonoBehaviour
         if (savedQuestions.Contains(1))
         {
             data +=
-                "• Cefalea recurrente\n" +
-                "• Mareos\n" +
-                "• Prurito intenso\n";
+                "• Cansancio de aproximadamente tres semanas\n" +
+                "• Dificultad progresiva para caminar\n";
         }
 
         if (savedQuestions.Contains(2))
         {
             data +=
-                "• Prurito posterior al baño con agua tibia\n";
+                "• Fiebre principalmente nocturna\n";
         }
 
         if (savedQuestions.Contains(3))
         {
             data +=
-                "• Visión borrosa ocasional\n" +
-                "• Ardor o calor en los pies\n";
+                "• Sangrado de encías\n" +
+                "• Episodios de epistaxis\n";
         }
 
         if (savedQuestions.Contains(4))
         {
             data +=
-                "• Sin antecedente trombótico conocido\n";
+                "• Moretones sin traumatismo previo\n" +
+                "• Presencia de puntos rojos/petequias\n";
         }
 
         if (savedQuestions.Contains(5))
         {
             data +=
-                "• Niega tabaquismo\n" +
-                "• Niega exposición habitual a humo o combustión\n";
+                "• Niega uso de anticoagulantes\n";
         }
 
         if (savedQuestions.Contains(6))
         {
             data +=
-                "• Residencia habitual: La Paz\n";
+                "• Niega traumatismo reciente\n";
         }
 
         if (savedQuestions.Contains(7))
         {
             data +=
-                "• Sin datos claros de apnea del sueño\n";
+                "• Pérdida leve de peso\n" +
+                "• Disminución del apetito\n";
         }
 
         if (savedQuestions.Contains(8))
         {
             data +=
-                "• Niega testosterona, eritropoyetina o anabólicos\n";
+                "• Sin antecedentes hematológicos conocidos\n";
         }
 
         if (savedQuestions.Contains(9))
         {
             data +=
-                "• Niega diuréticos\n" +
-                "• Niega deshidratación reciente\n";
-        }
-
-        if (savedQuestions.Contains(10))
-        {
-            data +=
-                "• Niega síntomas digestivos relevantes\n";
+                "• Alimentación habitual\n";
         }
 
         registeredDataText.text = data;
@@ -414,21 +382,28 @@ public class InterviewController : MonoBehaviour
     }
 
     // =====================================================
-    // CONTINUAR A DIAGNÓSTICO
+    // CONTINUAR A VALORACIÓN CLÍNICA
     // =====================================================
 
     public void ContinueToClinicalAssessment()
     {
-        if (savedQuestions.Count == 0)
+        // Las preguntas 1, 2, 3 y 4 son obligatorias.
+        bool hasRequiredQuestions =
+            savedQuestions.Contains(1) &&
+            savedQuestions.Contains(2) &&
+            savedQuestions.Contains(3) &&
+            savedQuestions.Contains(4);
+
+        if (!hasRequiredQuestions)
         {
             Debug.LogWarning(
-                "No puede continuar sin registrar información clínica."
+                "No puede continuar sin registrar las preguntas clínicas obligatorias."
             );
 
             if (hudController != null)
             {
                 hudController.ShowErrorAlert(
-                    "Registre información clínica antes de continuar."
+                    "Debe registrar duración de síntomas, fiebre, sangrado y moretones/petequias."
                 );
             }
 
@@ -443,7 +418,12 @@ public class InterviewController : MonoBehaviour
 
         if (hudController != null)
         {
-            hudController.SetCurrentPhase("Diagnóstico");
+            hudController.SetCurrentPhase("Valoración");
+        }
+
+        if (caseFlowController != null)
+        {
+            caseFlowController.GoToAssessment();
         }
 
         // =================================================
@@ -466,21 +446,21 @@ public class InterviewController : MonoBehaviour
         }
 
         // =================================================
-        // ABRIR VENTANA DE DIAGNÓSTICO
+        // ABRIR VALORACIÓN CLÍNICA
         // =================================================
 
-        if (diagnosisController != null)
+        if (clinicalAssessmentPanel != null)
         {
-            diagnosisController.OpenDiagnosis();
+            clinicalAssessmentPanel.SetActive(true);
 
             Debug.Log(
-                "ENTREVISTA FINALIZADA. PASANDO A DIAGNÓSTICO."
+                "ENTREVISTA FINALIZADA. PASANDO A VALORACIÓN CLÍNICA."
             );
         }
         else
         {
             Debug.LogError(
-                "InterviewController: falta asignar DiagnosisController."
+                "InterviewController: falta asignar ClinicalAssessmentPanel."
             );
         }
     }
@@ -556,21 +536,13 @@ public class InterviewController : MonoBehaviour
 
             SetResponse(InitialMessage);
 
-            // IMPORTANTE:
-            // La entrevista es una interfaz.
-            // Liberamos el mouse para poder seleccionar
-            // las preguntas nuevamente.
             if (hudController != null)
             {
                 hudController.SetUIInteractionMode(true);
             }
 
-            // Forzar nuevamente el estado de interfaz.
-            // Esto evita que el cursor quede bloqueado
-            // después de restaurar la partida.
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-
 
             Debug.Log(
                 "ENTREVISTA RESTAURADA. " +
@@ -579,8 +551,19 @@ public class InterviewController : MonoBehaviour
         }
         else
         {
+            if (hudController != null)
+            {
+                hudController.SetCurrentPhase("Valoración");
+            }
+
+            if (caseFlowController != null)
+            {
+                caseFlowController.GoToAssessment();
+            }
+
             Debug.Log(
-                "ENTREVISTA RESTAURADA COMO FINALIZADA."
+                "ENTREVISTA RESTAURADA COMO FINALIZADA. " +
+                "FASE ACTUAL: VALORACIÓN CLÍNICA."
             );
         }
     }

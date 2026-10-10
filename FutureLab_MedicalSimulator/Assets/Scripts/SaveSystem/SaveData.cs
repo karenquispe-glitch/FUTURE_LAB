@@ -68,11 +68,29 @@ public class SaveData
     public string heartRate;
     public string temperature;
 
+    // Frecuencia respiratoria.
+    public string respiratoryRate;
+
     // ==============================
     // HALLAZGOS CLÍNICOS
     // ==============================
 
     public List<string> clinicalFindings =
+        new List<string>();
+
+    // ==============================
+    // VALORACIÓN CLÍNICA
+    // ==============================
+
+    // Acciones clínicas ya completadas.
+    // Ejemplos:
+    // Inspeccion
+    // Pulso
+    // Presion
+    // Temperatura
+    // Saturacion
+    // Respiracion
+    public List<string> completedAssessments =
         new List<string>();
 
     // ==============================
@@ -85,10 +103,34 @@ public class SaveData
     public List<string> testResults =
         new List<string>();
 
+    // Resultados que el jugador
+    // ya abrió o revisó.
+    public List<string> reviewedResults =
+        new List<string>();
+
+    // ==============================
+    // ALERTAS CLÍNICAS
+    // ==============================
+
+    // Indica si ya se activó
+    // la alerta de riesgo hemorrágico.
+    public bool riskAlertTriggered;
+
+    // Nivel del evento dinámico de sangrado.
+    //
+    // 0 = sin evento
+    // 1 = primera advertencia
+    // 2 = deterioro clínico
+    public int bleedingEventLevel;
+
     // ==============================
     // DIAGNÓSTICO
     // ==============================
 
+    // Hipótesis o diagnóstico provisional.
+    public string provisionalDiagnosis;
+
+    // Diagnóstico final seleccionado.
     public string selectedDiagnosis;
 
     // ==============================

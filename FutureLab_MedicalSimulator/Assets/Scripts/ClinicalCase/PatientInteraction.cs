@@ -15,7 +15,6 @@ public class PatientInteraction : MonoBehaviour
     [Min(1f)]
     private float interactionDistance = 8f;
 
-
     [SerializeField]
     [Min(0.05f)]
     private float detectionRadius = 0.35f;
@@ -23,6 +22,10 @@ public class PatientInteraction : MonoBehaviour
     [Header("Control del participante")]
     [SerializeField] private FirstPersonController firstPersonController;
     [SerializeField] private StarterAssetsInputs starterAssetsInputs;
+
+    [Header("Controladores del caso")]
+    [SerializeField] private HUDController hudController;
+    [SerializeField] private ClinicalCaseFlowController caseFlowController;
 
     private bool interactionEnabled;
     private bool panelOpen;
@@ -68,6 +71,7 @@ public class PatientInteraction : MonoBehaviour
             Debug.LogError(
                 "PatientInteraction: falta asignar Player Camera."
             );
+
             return;
         }
 
@@ -98,8 +102,12 @@ public class PatientInteraction : MonoBehaviour
 
             if (detectedPatient == this)
             {
-                Debug.Log("PACIENTE DETECTADO CORRECTAMENTE.");
+                Debug.Log(
+                    "PACIENTE DETECTADO CORRECTAMENTE."
+                );
+
                 OpenPatientPanel();
+
                 return;
             }
         }
@@ -108,6 +116,10 @@ public class PatientInteraction : MonoBehaviour
             "El clic derecho funcionó, pero no se detectó al paciente."
         );
     }
+
+    // =====================================================
+    // HABILITAR INTERACCIÓN
+    // =====================================================
 
     public void EnableInteraction()
     {
@@ -118,6 +130,10 @@ public class PatientInteraction : MonoBehaviour
         );
     }
 
+    // =====================================================
+    // ABRIR PANEL DEL PACIENTE
+    // =====================================================
+
     public void OpenPatientPanel()
     {
         if (patientInfoPanel == null)
@@ -125,17 +141,46 @@ public class PatientInteraction : MonoBehaviour
             Debug.LogError(
                 "PatientInteraction: falta asignar PatientInfoPanel."
             );
+
             return;
         }
 
         panelOpen = true;
+
         patientInfoPanel.SetActive(true);
+
+        // =================================================
+        // CAMBIAR FASE A ENTREVISTA
+        // =================================================
+
+        if (caseFlowController != null)
+        {
+            caseFlowController.GoToInterview();
+        }
+
+        if (hudController != null)
+        {
+            hudController.SetCurrentPhase("Entrevista");
+        }
+
+        // =================================================
+        // BLOQUEAR CONTROL DEL JUGADOR
+        // =================================================
 
         SetPlayerControl(false);
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        Debug.Log(
+            "PANEL DEL PACIENTE ABIERTO. " +
+            "FASE ACTUAL: ENTREVISTA."
+        );
     }
+
+    // =====================================================
+    // CERRAR PANEL DEL PACIENTE
+    // =====================================================
 
     public void ClosePatientPanel()
     {
@@ -150,7 +195,15 @@ public class PatientInteraction : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        Debug.Log(
+            "PANEL DEL PACIENTE CERRADO."
+        );
     }
+
+    // =====================================================
+    // CONTROL DEL JUGADOR
+    // =====================================================
 
     private void SetPlayerControl(bool enabled)
     {
