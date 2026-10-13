@@ -72,6 +72,7 @@
     <Compile Include="Assets\StarterAssets\FirstPersonController\Scripts\BasicRigidBodyPush.cs" />
     <Compile Include="Assets\Scripts\ClinicalCase\DiagnosisController.cs" />
     <Compile Include="Assets\Scripts\UI\MenuPanelController.cs" />
+    <Compile Include="Assets\Scripts\musica\MusicManager.cs" />
     <Compile Include="Assets\Scripts\UI\HUDController.cs" />
     <Compile Include="Assets\Scripts\UI\ReturnToMainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\ControlCinematicaAmbulancia.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Assets\Scripts\ClinicalCase\GameOverController.cs" />
     <Compile Include="Assets\StarterAssets\Mobile\Scripts\Utilities\MobileDisableAutoSwitchControls.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\GameSaveLoader.cs" />
+    <Compile Include="Assets\Scripts\ClinicalCase\ClinicalCaseFlowController.cs" />
     <Compile Include="Assets\StarterAssets\FirstPersonController\Scripts\FirstPersonController.cs" />
     <Compile Include="Assets\StarterAssets\InputSystem\StarterAssetsInputs.cs" />
   </ItemGroup>
