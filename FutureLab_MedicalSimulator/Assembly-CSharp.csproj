@@ -60,6 +60,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.20f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\ClinicalCase\LabTestController.cs" />
     <Compile Include="Assets\StarterAssets\Mobile\Scripts\VirtualInputs\UIVirtualTouchZone.cs" />
     <Compile Include="Assets\Scripts\ClinicalCase\CaseStartController.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveManager.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Assets\Scripts\UI\AudioSettingsController.cs" />
     <Compile Include="Assets\Scripts\paciente\PatientAnimationInteraction.cs" />
     <Compile Include="Assets\StarterAssets\Mobile\Scripts\VirtualInputs\UIVirtualJoystick.cs" />
+    <Compile Include="Assets\Scripts\ClinicalCase\ClinicalAssessmentController.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveData.cs" />
     <Compile Include="Assets\StarterAssets\FirstPersonController\Scripts\BasicRigidBodyPush.cs" />
     <Compile Include="Assets\Scripts\ClinicalCase\DiagnosisController.cs" />
@@ -78,12 +80,16 @@
     <Compile Include="Assets\Scripts\UI\ControlCinematicaAmbulancia.cs" />
     <Compile Include="Assets\Scripts\UI\ButtonSoundController.cs" />
     <Compile Include="Assets\StarterAssets\Mobile\Scripts\CanvasInputs\UICanvasControllerInput.cs" />
+    <Compile Include="Assets\Scripts\ClinicalCase\ScoreController.cs" />
+    <Compile Include="Assets\Scripts\ClinicalCase\LaboratoryUIController.cs" />
     <Compile Include="Assets\Scripts\ClinicalCase\InterviewController.cs" />
+    <Compile Include="Assets\Scripts\ClinicalCase\DifferentialDiagnosisController.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\ClinicalCase\PatientInteraction.cs" />
     <Compile Include="Assets\Scripts\ClinicalCase\GameOverController.cs" />
     <Compile Include="Assets\StarterAssets\Mobile\Scripts\Utilities\MobileDisableAutoSwitchControls.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\GameSaveLoader.cs" />
+    <Compile Include="Assets\Scripts\ClinicalCase\ClinicalAlertController.cs" />
     <Compile Include="Assets\Scripts\ClinicalCase\ClinicalCaseFlowController.cs" />
     <Compile Include="Assets\StarterAssets\FirstPersonController\Scripts\FirstPersonController.cs" />
     <Compile Include="Assets\StarterAssets\InputSystem\StarterAssetsInputs.cs" />
