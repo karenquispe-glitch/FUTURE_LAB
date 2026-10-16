@@ -18,7 +18,7 @@ public class InterviewController : MonoBehaviour
     // existentes en el Inspector.
     [SerializeField] private GameObject clinicalAssessmentPanel;
 
-    // Este panel se creará/configurará en la siguiente tarea.
+    // Este panel se crearï¿½/configurarï¿½ en la siguiente tarea.
     [SerializeField] private GameObject interviewSummaryPanel;
 
     // =====================================================
@@ -28,6 +28,10 @@ public class InterviewController : MonoBehaviour
     [Header("Textos")]
     [SerializeField] private TMP_Text patientResponseText;
     [SerializeField] private TMP_Text registeredDataText;
+
+    [Header("Textos del resumen")]
+    [SerializeField] private TMP_Text summaryDataText;
+    [SerializeField] private TMP_Text essentialProgressText;
 
     // =====================================================
     // BOTONES
@@ -69,14 +73,14 @@ public class InterviewController : MonoBehaviour
     // -----------------------------------------------------
     //
     // Una pregunta puede haber sido realizada aunque
-    // el jugador NO haya registrado todavía su hallazgo.
+    // el jugador NO haya registrado todavï¿½a su hallazgo.
     //
     // Ejemplo:
     // answeredQuestions contiene 3
     // registeredFindings NO contiene 3
     //
     // Esto significa:
-    // Pregunta 3 realizada = SÍ
+    // Pregunta 3 realizada = Sï¿½
     // Hallazgo 3 registrado = NO
     // -----------------------------------------------------
 
@@ -87,8 +91,8 @@ public class InterviewController : MonoBehaviour
     // HALLAZGOS REGISTRADOS
     // -----------------------------------------------------
     //
-    // Solo se agregan aquí cuando el jugador presiona
-    // explícitamente "Registrar dato".
+    // Solo se agregan aquï¿½ cuando el jugador presiona
+    // explï¿½citamente "Registrar dato".
     // -----------------------------------------------------
 
     private HashSet<int> registeredFindings =
@@ -114,11 +118,11 @@ public class InterviewController : MonoBehaviour
     // =====================================================
 
     // IMPORTANTE:
-    // interviewCompleted solamente deberá convertirse
+    // interviewCompleted solamente deberï¿½ convertirse
     // en true cuando posteriormente se confirme
     // el resumen de entrevista.
     //
-    // "Finalizar entrevista" todavía NO significa
+    // "Finalizar entrevista" todavï¿½a NO significa
     // entrevista confirmada.
     private bool interviewCompleted = false;
 
@@ -137,7 +141,7 @@ public class InterviewController : MonoBehaviour
             pacienteAnimado.SetActive(true);
         }
 
-        // El paciente quieto se utilizará después de la entrevista.
+        // El paciente quieto se utilizarï¿½ despuï¿½s de la entrevista.
         if (pacienteValoracion != null)
         {
             pacienteValoracion.SetActive(false);
@@ -173,11 +177,48 @@ public class InterviewController : MonoBehaviour
     }
 
     // =====================================================
+    // BLOQUEAR INTERACCIONES SI EL CASO YA FINALIZï¿½
+    // =====================================================
+
+    private bool BlockIfCaseEnded(string actionName)
+    {
+        if (hudController != null &&
+            hudController.IsCaseEnded())
+        {
+            Debug.LogWarning(
+                "ACCIï¿½N CLï¿½NICA BLOQUEADA: " +
+                actionName +
+                ". EL CASO YA FINALIZï¿½."
+            );
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // =====================================================
     // ABRIR ENTREVISTA
     // =====================================================
 
     public void OpenInterview()
     {
+        if (BlockIfCaseEnded("ABRIR ENTREVISTA"))
+        {
+            return;
+        }
+
+        // Si la entrevista ya fue confirmada, no se puede volver a abrir.
+        if (interviewCompleted)
+        {
+            Debug.Log(
+                "ENTREVISTA YA CONFIRMADA. " +
+                "NO SE PUEDE REABRIR."
+            );
+
+            return;
+        }
+
         if (patientInfoPanel != null)
         {
             patientInfoPanel.SetActive(false);
@@ -225,7 +266,7 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 1
-    // SÍNTOMAS PRINCIPALES
+    // Sï¿½NTOMAS PRINCIPALES
     // ESENCIAL
     // =====================================================
 
@@ -233,14 +274,14 @@ public class InterviewController : MonoBehaviour
     {
         SelectQuestion(
             1,
-            "Me siento muy débil, me mareo con frecuencia " +
+            "Me siento muy dï¿½bil, me mareo con frecuencia " +
             "y me falta el aire cuando hago esfuerzo."
         );
     }
 
     // =====================================================
     // PREGUNTA 2
-    // TIEMPO DE EVOLUCIÓN
+    // TIEMPO DE EVOLUCIï¿½N
     // ESENCIAL
     // =====================================================
 
@@ -248,14 +289,14 @@ public class InterviewController : MonoBehaviour
     {
         SelectQuestion(
             2,
-            "Los síntomas comenzaron hace varios días " +
-            "y últimamente han empeorado."
+            "Los sï¿½ntomas comenzaron hace varios dï¿½as " +
+            "y ï¿½ltimamente han empeorado."
         );
     }
 
     // =====================================================
     // PREGUNTA 3
-    // TRANSFUSIÓN ANTERIOR
+    // TRANSFUSIï¿½N ANTERIOR
     // ESENCIAL
     // =====================================================
 
@@ -263,14 +304,14 @@ public class InterviewController : MonoBehaviour
     {
         SelectQuestion(
             3,
-            "Sí. Recibí una transfusión de sangre " +
-            "durante una operación anterior."
+            "Sï¿½. Recibï¿½ una transfusiï¿½n de sangre " +
+            "durante una operaciï¿½n anterior."
         );
     }
 
     // =====================================================
     // PREGUNTA 4
-    // REACCIÓN TRANSFUSIONAL PREVIA
+    // REACCIï¿½N TRANSFUSIONAL PREVIA
     // ESENCIAL
     // =====================================================
 
@@ -278,8 +319,8 @@ public class InterviewController : MonoBehaviour
     {
         SelectQuestion(
             4,
-            "Sí. Durante aquella transfusión presenté " +
-            "fiebre y escalofríos."
+            "Sï¿½. Durante aquella transfusiï¿½n presentï¿½ " +
+            "fiebre y escalofrï¿½os."
         );
     }
 
@@ -299,7 +340,7 @@ public class InterviewController : MonoBehaviour
 
     // =====================================================
     // PREGUNTA 6
-    // GRUPO SANGUÍNEO REFERIDO
+    // GRUPO SANGUï¿½NEO REFERIDO
     // COMPLEMENTARIA
     // =====================================================
 
@@ -317,12 +358,12 @@ public class InterviewController : MonoBehaviour
     // PREGUNTAS 7, 8 Y 9
     // =====================================================
     //
-    // Estos métodos permanecen temporalmente porque
+    // Estos mï¿½todos permanecen temporalmente porque
     // actualmente pueden existir botones de Unity
     // conectados a ShowAnswer7/8/9.
     //
     // Cuando eliminemos esos botones del InterviewPanel,
-    // estos métodos también podrán eliminarse.
+    // estos mï¿½todos tambiï¿½n podrï¿½n eliminarse.
     // =====================================================
 
     public void ShowAnswer7()
@@ -349,14 +390,19 @@ public class InterviewController : MonoBehaviour
         string patientAnswer
     )
     {
-        // Guardamos qué pregunta está actualmente seleccionada.
+        if (BlockIfCaseEnded("REALIZAR PREGUNTA"))
+        {
+            return;
+        }
+
+        // Guardamos quï¿½ pregunta estï¿½ actualmente seleccionada.
         selectedQuestion = questionId;
 
         // IMPORTANTE:
         // La pregunta queda marcada como REALIZADA
         // solamente por haberla consultado.
         //
-        // Todavía NO significa que su hallazgo
+        // Todavï¿½a NO significa que su hallazgo
         // haya sido registrado.
         answeredQuestions.Add(questionId);
 
@@ -365,8 +411,8 @@ public class InterviewController : MonoBehaviour
 
         // Habilitar o deshabilitar Registrar dato.
         //
-        // Si el hallazgo ya había sido registrado,
-        // el botón queda deshabilitado.
+        // Si el hallazgo ya habï¿½a sido registrado,
+        // el botï¿½n queda deshabilitado.
         UpdateRegisterButtonState();
 
         Debug.Log(
@@ -383,11 +429,16 @@ public class InterviewController : MonoBehaviour
 
     private void ShowDeprecatedQuestionWarning()
     {
+        if (BlockIfCaseEnded("REALIZAR PREGUNTA"))
+        {
+            return;
+        }
+
         selectedQuestion = 0;
 
         SetResponse(
             "Esta pregunta ya no forma parte " +
-            "de la entrevista clínica actual."
+            "de la entrevista clï¿½nica actual."
         );
 
         UpdateRegisterButtonState();
@@ -395,7 +446,7 @@ public class InterviewController : MonoBehaviour
         if (hudController != null)
         {
             hudController.ShowWarningAlert(
-                "Pregunta no disponible en esta versión del caso."
+                "Pregunta no disponible en esta versiï¿½n del caso."
             );
         }
     }
@@ -406,6 +457,11 @@ public class InterviewController : MonoBehaviour
 
     public void SaveCurrentResponse()
     {
+        if (BlockIfCaseEnded("REGISTRAR HALLAZGO"))
+        {
+            return;
+        }
+
         // No existe una pregunta seleccionada.
         if (selectedQuestion == 0)
         {
@@ -424,8 +480,8 @@ public class InterviewController : MonoBehaviour
         }
 
         // Seguridad:
-        // solo existen actualmente preguntas clínicas
-        // válidas del 1 al 6.
+        // solo existen actualmente preguntas clï¿½nicas
+        // vï¿½lidas del 1 al 6.
         if (selectedQuestion < 1 ||
             selectedQuestion > 6)
         {
@@ -457,7 +513,7 @@ public class InterviewController : MonoBehaviour
             if (hudController != null)
             {
                 hudController.ShowWarningAlert(
-                    "Esta información ya fue registrada."
+                    "Esta informaciï¿½n ya fue registrada."
                 );
             }
 
@@ -490,7 +546,7 @@ public class InterviewController : MonoBehaviour
         if (hudController != null)
         {
             hudController.ShowSuccessAlert(
-                "Información clínica registrada."
+                "Informaciï¿½n clï¿½nica registrada."
             );
         }
 
@@ -510,13 +566,20 @@ public class InterviewController : MonoBehaviour
     }
 
     // =====================================================
-    // ACTUALIZAR BOTÓN REGISTRAR DATO
+    // ACTUALIZAR BOTï¿½N REGISTRAR DATO
     // =====================================================
 
     private void UpdateRegisterButtonState()
     {
         if (saveResponseButton == null)
         {
+            return;
+        }
+
+        if (hudController != null &&
+            hudController.IsCaseEnded())
+        {
+            saveResponseButton.interactable = false;
             return;
         }
 
@@ -539,7 +602,7 @@ public class InterviewController : MonoBehaviour
     }
 
     // =====================================================
-    // ACTUALIZAR INFORMACIÓN REGISTRADA
+    // ACTUALIZAR INFORMACIï¿½N REGISTRADA
     // =====================================================
 
     private void UpdateRegisteredData()
@@ -558,8 +621,8 @@ public class InterviewController : MonoBehaviour
         if (registeredFindings.Count == 0)
         {
             data =
-                "Aún no se registraron datos.\n\n" +
-                "Información esencial registrada: 0/4";
+                "Aï¿½n no se registraron datos.\n\n" +
+                "Informaciï¿½n esencial registrada: 0/4";
 
             registeredDataText.text = data;
 
@@ -568,50 +631,50 @@ public class InterviewController : MonoBehaviour
 
         // -------------------------------------------------
         // HALLAZGO 1
-        // SÍNTOMAS PRINCIPALES
+        // Sï¿½NTOMAS PRINCIPALES
         // -------------------------------------------------
 
         if (registeredFindings.Contains(1))
         {
             data +=
-                "• Síntomas principales: debilidad, " +
+                "ï¿½ Sï¿½ntomas principales: debilidad, " +
                 "mareos y disnea al esfuerzo.\n";
         }
 
         // -------------------------------------------------
         // HALLAZGO 2
-        // TIEMPO DE EVOLUCIÓN
+        // TIEMPO DE EVOLUCIï¿½N
         // -------------------------------------------------
 
         if (registeredFindings.Contains(2))
         {
             data +=
-                "• Tiempo de evolución: síntomas de varios días " +
+                "ï¿½ Tiempo de evoluciï¿½n: sï¿½ntomas de varios dï¿½as " +
                 "con empeoramiento actual.\n";
         }
 
         // -------------------------------------------------
         // HALLAZGO 3
-        // TRANSFUSIÓN ANTERIOR
+        // TRANSFUSIï¿½N ANTERIOR
         // -------------------------------------------------
 
         if (registeredFindings.Contains(3))
         {
             data +=
-                "• Transfusión anterior: recibió sangre " +
-                "durante una operación.\n";
+                "ï¿½ Transfusiï¿½n anterior: recibiï¿½ sangre " +
+                "durante una operaciï¿½n.\n";
         }
 
         // -------------------------------------------------
         // HALLAZGO 4
-        // REACCIÓN TRANSFUSIONAL PREVIA
+        // REACCIï¿½N TRANSFUSIONAL PREVIA
         // -------------------------------------------------
 
         if (registeredFindings.Contains(4))
         {
             data +=
-                "• Reacción previa: presentó fiebre " +
-                "y escalofríos durante una transfusión.\n";
+                "ï¿½ Reacciï¿½n previa: presentï¿½ fiebre " +
+                "y escalofrï¿½os durante una transfusiï¿½n.\n";
         }
 
         // -------------------------------------------------
@@ -623,20 +686,20 @@ public class InterviewController : MonoBehaviour
         if (registeredFindings.Contains(5))
         {
             data +=
-                "• Alergias: no refiere alergias conocidas.\n";
+                "ï¿½ Alergias: no refiere alergias conocidas.\n";
         }
 
         // -------------------------------------------------
         // HALLAZGO 6
-        // GRUPO SANGUÍNEO REFERIDO
+        // GRUPO SANGUï¿½NEO REFERIDO
         // COMPLEMENTARIO
         // -------------------------------------------------
 
         if (registeredFindings.Contains(6))
         {
             data +=
-                "• Grupo sanguíneo referido: A positivo, " +
-                "pendiente de confirmación.\n";
+                "ï¿½ Grupo sanguï¿½neo referido: A positivo, " +
+                "pendiente de confirmaciï¿½n.\n";
         }
 
         // -------------------------------------------------
@@ -647,7 +710,7 @@ public class InterviewController : MonoBehaviour
             GetEssentialFindingsCount();
 
         data +=
-            "\nInformación esencial registrada: " +
+            "\nInformaciï¿½n esencial registrada: " +
             essentialCount +
             "/" +
             TotalEssentialFindings;
@@ -692,13 +755,13 @@ public class InterviewController : MonoBehaviour
     //
     // IMPORTANTE:
     //
-    // Este método conserva el nombre antiguo
-    // ContinueToClinicalAssessment para NO romper todavía
+    // Este mï¿½todo conserva el nombre antiguo
+    // ContinueToClinicalAssessment para NO romper todavï¿½a
     // el OnClick configurado en Unity.
     //
-    // Sin embargo, YA NO cambia a Valoración.
+    // Sin embargo, YA NO cambia a Valoraciï¿½n.
     //
-    // En la siguiente tarea este botón abrirá
+    // En la siguiente tarea este botï¿½n abrirï¿½
     // InterviewSummaryPanel.
     // =====================================================
 
@@ -708,16 +771,21 @@ public class InterviewController : MonoBehaviour
     }
 
     // =====================================================
-    // PREPARAR FINALIZACIÓN DE ENTREVISTA
+    // PREPARAR FINALIZACIï¿½N DE ENTREVISTA
     // =====================================================
 
     public void FinishInterview()
     {
+        if (BlockIfCaseEnded("FINALIZAR ENTREVISTA"))
+        {
+            return;
+        }
+
         // -------------------------------------------------
-        // NO MARCAR TODAVÍA interviewCompleted = true
+        // NO MARCAR TODAVï¿½A interviewCompleted = true
         // -------------------------------------------------
         //
-        // Eso solamente ocurrirá cuando posteriormente
+        // Eso solamente ocurrirï¿½ cuando posteriormente
         // se confirme el resumen.
         // -------------------------------------------------
 
@@ -740,7 +808,9 @@ public class InterviewController : MonoBehaviour
 
         if (interviewSummaryPanel != null)
         {
-            PreparePatientForClinicalAssessment();
+            // Al finalizar la entrevista solo actualizamos y mostramos el resumen.
+            // El cambio de paciente se realiza reciÃ©n al confirmar la entrevista.
+            UpdateInterviewSummary();
 
             if (interviewPanel != null)
             {
@@ -757,32 +827,32 @@ public class InterviewController : MonoBehaviour
             Debug.Log(
                 "ENTREVISTA FINALIZADA. " +
                 "ABRIENDO RESUMEN DE ENTREVISTA. " +
-                "LA FASE CONTINÚA SIENDO ENTREVISTA."
+                "LA FASE CONTINï¿½A SIENDO ENTREVISTA."
             );
 
             return;
         }
 
         // -------------------------------------------------
-        // EL PANEL TODAVÍA NO FUE CREADO
+        // EL PANEL TODAVï¿½A NO FUE CREADO
         // -------------------------------------------------
 
         Debug.Log(
-            "FINALIZACIÓN DE ENTREVISTA SOLICITADA. " +
-            "InterviewSummaryPanel todavía no está asignado. " +
-            "NO se cambia a valoración clínica."
+            "FINALIZACIï¿½N DE ENTREVISTA SOLICITADA. " +
+            "InterviewSummaryPanel todavï¿½a no estï¿½ asignado. " +
+            "NO se cambia a valoraciï¿½n clï¿½nica."
         );
 
         if (hudController != null)
         {
             hudController.ShowWarningAlert(
-                "La entrevista está lista para mostrar su resumen."
+                "La entrevista estï¿½ lista para mostrar su resumen."
             );
         }
     }
 
     // =====================================================
-    // PREPARAR PACIENTE PARA VALORACIÓN CLÍNICA
+    // PREPARAR PACIENTE PARA VALORACIï¿½N CLï¿½NICA
     // =====================================================
 
     private void PreparePatientForClinicalAssessment()
@@ -798,7 +868,329 @@ public class InterviewController : MonoBehaviour
         }
 
         Debug.Log(
-            "PACIENTE DE VALORACIÓN ACTIVADO."
+            "PACIENTE DE VALORACIï¿½N ACTIVADO."
+        );
+    }
+
+    // =====================================================
+    // ACTUALIZAR RESUMEN DE ENTREVISTA
+    // =====================================================
+
+    private void UpdateInterviewSummary()
+    {
+        if (summaryDataText != null)
+        {
+            string summary = "";
+
+            if (registeredFindings.Contains(1))
+            {
+                summary +=
+                    "ï¿½ Sï¿½ntomas principales: debilidad, mareos y disnea al esfuerzo.\n";
+            }
+
+            if (registeredFindings.Contains(2))
+            {
+                summary +=
+                    "ï¿½ Tiempo de evoluciï¿½n: sï¿½ntomas de varios dï¿½as con empeoramiento actual.\n";
+            }
+
+            if (registeredFindings.Contains(3))
+            {
+                summary +=
+                    "ï¿½ Transfusiï¿½n anterior: recibiï¿½ sangre durante una operaciï¿½n.\n";
+            }
+
+            if (registeredFindings.Contains(4))
+            {
+                summary +=
+                    "ï¿½ Reacciï¿½n previa: presentï¿½ fiebre y escalofrï¿½os durante una transfusiï¿½n.\n";
+            }
+
+            if (registeredFindings.Contains(5))
+            {
+                summary +=
+                    "ï¿½ Alergias: no refiere alergias conocidas.\n";
+            }
+
+            if (registeredFindings.Contains(6))
+            {
+                summary +=
+                    "ï¿½ Grupo sanguï¿½neo referido: A positivo, pendiente de confirmaciï¿½n.\n";
+            }
+
+            if (string.IsNullOrEmpty(summary))
+            {
+                summary =
+                    "Aï¿½n no hay hallazgos registrados.";
+            }
+
+            summaryDataText.text = summary;
+        }
+
+        if (essentialProgressText != null)
+        {
+            essentialProgressText.text =
+                "Informaciï¿½n esencial registrada: " +
+                GetEssentialFindingsCount() +
+                "/4";
+        }
+    }
+
+    // =====================================================
+    // VOLVER A LA ENTREVISTA DESDE EL RESUMEN
+    // =====================================================
+
+    public void BackToInterview()
+    {
+        if (BlockIfCaseEnded("VOLVER A LA ENTREVISTA"))
+        {
+            return;
+        }
+
+        if (interviewSummaryPanel != null)
+        {
+            interviewSummaryPanel.SetActive(false);
+        }
+
+        if (interviewPanel != null)
+        {
+            interviewPanel.SetActive(true);
+        }
+
+        if (registeredDataPanel != null)
+        {
+            registeredDataPanel.SetActive(true);
+        }
+
+        // Seguimos en ENTREVISTA.
+        if (hudController != null)
+        {
+            hudController.SetCurrentPhase("Entrevista");
+            hudController.SetUIInteractionMode(true);
+        }
+
+        if (caseFlowController != null)
+        {
+            caseFlowController.GoToInterview();
+        }
+
+        UpdateRegisteredData();
+
+        SetResponse(
+            "Puede continuar entrevistando al paciente."
+        );
+
+        Debug.Log(
+            "VOLVIENDO A LA ENTREVISTA SIN PERDER LOS DATOS REGISTRADOS."
+        );
+    }
+
+    // =====================================================
+    // CERRAR ENTREVISTA Y PASAR A VALORACIï¿½N
+    // TAREA 9
+    // =====================================================
+
+    private void CompleteInterviewAndReturnToPatientView()
+    {
+        // Cambiar al paciente preparado para valoraciÃ³n Ãºnicamente
+        // despuÃ©s de confirmar la entrevista.
+        PreparePatientForClinicalAssessment();
+
+        // Cerrar toda la interfaz de entrevista.
+        if (patientInfoPanel != null)
+        {
+            patientInfoPanel.SetActive(false);
+        }
+
+        if (interviewPanel != null)
+        {
+            interviewPanel.SetActive(false);
+        }
+
+        if (registeredDataPanel != null)
+        {
+            registeredDataPanel.SetActive(false);
+        }
+
+        if (interviewSummaryPanel != null)
+        {
+            interviewSummaryPanel.SetActive(false);
+        }
+
+        // No abrir automï¿½ticamente la antigua valoraciï¿½n clï¿½nica.
+        if (clinicalAssessmentPanel != null)
+        {
+            clinicalAssessmentPanel.SetActive(false);
+        }
+
+        selectedQuestion = 0;
+        UpdateRegisterButtonState();
+
+        // Cambiar HUD a VALORACIï¿½N y devolver el control de cï¿½mara.
+        if (hudController != null)
+        {
+            hudController.SetCurrentPhase("Valoracion");
+            hudController.SetUIInteractionMode(false);
+        }
+
+        // Sincronizar la fase lï¿½gica del caso.
+        if (caseFlowController != null)
+        {
+            caseFlowController.GoToAssessment();
+        }
+
+        Debug.Log(
+            "ENTREVISTA CERRADA. " +
+            "FASE CAMBIADA A VALORACIï¿½N. " +
+            "NO SE ABRE NINGï¿½N PANEL DE VALORACIï¿½N AUTOMï¿½TICAMENTE."
+        );
+    }
+
+    // =====================================================
+    // CONFIRMAR RESUMEN Y CONTINUAR
+    // =====================================================
+
+    public void ConfirmInterviewSummary()
+    {
+        if (BlockIfCaseEnded("CONFIRMAR ENTREVISTA"))
+        {
+            return;
+        }
+
+        int essentialCount = GetEssentialFindingsCount();
+
+        // 0/4 o 1/4: bloquear sin penalizaciï¿½n.
+        if (essentialCount <= 1)
+        {
+            if (hudController != null)
+            {
+                hudController.ShowWarningAlert(
+                    "Informaciï¿½n clï¿½nica insuficiente. " +
+                    "Continï¿½e la entrevista antes de avanzar."
+                );
+            }
+
+            Debug.LogWarning(
+                "CONFIRMACIï¿½N BLOQUEADA. " +
+                "INFORMACIï¿½N ESENCIAL: " +
+                essentialCount +
+                "/4"
+            );
+
+            return;
+        }
+
+        // 2/4: bloquear y aplicar +05:00 una sola vez.
+        if (essentialCount == 2)
+        {
+            if (hudController != null)
+            {
+                hudController.ShowWarningAlert(
+                    "Informaciï¿½n clï¿½nica insuficiente. " +
+                    "Continï¿½e la entrevista antes de avanzar."
+                );
+
+                hudController.ApplyTimePenalty(
+                    "ENTREVISTA_INSUFICIENTE_2_DE_4"
+                );
+            }
+
+            Debug.LogWarning(
+                "CONFIRMACIï¿½N BLOQUEADA CON 2/4."
+            );
+
+            return;
+        }
+
+        // 3/4: permitir con advertencia y futura
+        // penalizaciï¿½n de puntuaciï¿½n.
+        if (essentialCount == 3)
+        {
+            if (hudController != null)
+            {
+                hudController.ShowWarningAlert(
+                    "La entrevista se continuarï¿½ con " +
+                    "informaciï¿½n clï¿½nica incompleta."
+                );
+            }
+
+            Debug.LogWarning(
+                "ENTREVISTA CONFIRMADA CON 3/4. " +
+                "DEBERï¿½ APLICARSE PENALIZACIï¿½N DE PUNTUACIï¿½N."
+            );
+
+            interviewCompleted = true;
+
+            CompleteInterviewAndReturnToPatientView();
+
+            return;
+        }
+
+        // 4/4: confirmar normalmente.
+        if (essentialCount == 4)
+        {
+            interviewCompleted = true;
+
+            if (hudController != null)
+            {
+                hudController.ShowSuccessAlert(
+                    "Entrevista completada correctamente."
+                );
+            }
+
+            Debug.Log(
+                "ENTREVISTA CONFIRMADA CON 4/4. " +
+                "PUNTUACIï¿½N COMPLETA."
+            );
+
+            CompleteInterviewAndReturnToPatientView();
+
+            return;
+        }
+    }
+
+    // =====================================================
+    // OCULTAR INTERFAZ CLï¿½NICA AL FINALIZAR EL CASO
+    // =====================================================
+
+    public void HideInterviewUIForCaseEnd()
+    {
+        if (patientInfoPanel != null)
+        {
+            patientInfoPanel.SetActive(false);
+        }
+
+        if (interviewPanel != null)
+        {
+            interviewPanel.SetActive(false);
+        }
+
+        if (registeredDataPanel != null)
+        {
+            registeredDataPanel.SetActive(false);
+        }
+
+        if (interviewSummaryPanel != null)
+        {
+            interviewSummaryPanel.SetActive(false);
+        }
+
+        if (clinicalAssessmentPanel != null)
+        {
+            clinicalAssessmentPanel.SetActive(false);
+        }
+
+        selectedQuestion = 0;
+
+        if (saveResponseButton != null)
+        {
+            saveResponseButton.interactable = false;
+        }
+
+        UpdateRegisterButtonState();
+
+        Debug.Log(
+            "INTERFAZ CLï¿½NICA OCULTADA POR FINALIZACIï¿½N DEL CASO."
         );
     }
 
@@ -817,7 +1209,7 @@ public class InterviewController : MonoBehaviour
     //
     // HUDController actualmente llama GetSavedQuestions().
     //
-    // Conservamos ese método, pero desde ahora representa
+    // Conservamos ese mï¿½todo, pero desde ahora representa
     // PREGUNTAS REALIZADAS.
     // =====================================================
 
@@ -854,7 +1246,7 @@ public class InterviewController : MonoBehaviour
     }
 
     // =====================================================
-    // SABER SI LA ENTREVISTA TERMINÓ
+    // SABER SI LA ENTREVISTA TERMINï¿½
     // =====================================================
 
     public bool IsInterviewCompleted()
@@ -863,21 +1255,60 @@ public class InterviewController : MonoBehaviour
     }
 
     // =====================================================
+    // ESTADO VISUAL ACTUAL DE LA ENTREVISTA
+    // =====================================================
+
+    public string GetInterviewViewState()
+    {
+        if (interviewSummaryPanel != null &&
+            interviewSummaryPanel.activeSelf)
+        {
+            return "Summary";
+        }
+
+        if (interviewPanel != null &&
+            interviewPanel.activeSelf)
+        {
+            return "Interview";
+        }
+
+        return "Hidden";
+    }
+
+    public int GetSelectedInterviewQuestion()
+    {
+        return selectedQuestion;
+    }
+
+    public string GetCurrentInterviewResponse()
+    {
+        if (patientResponseText == null)
+        {
+            return "";
+        }
+
+        return patientResponseText.text;
+    }
+
+    // =====================================================
     // RESTAURAR ESTADO NUEVO DE ENTREVISTA
     // =====================================================
     //
-    // Este método ya soporta por separado:
+    // Este mï¿½todo ya soporta por separado:
     // - preguntas realizadas
     // - hallazgos registrados
     //
-    // Posteriormente SaveData y GameSaveLoader utilizarán
-    // esta versión.
+    // Posteriormente SaveData y GameSaveLoader utilizarï¿½n
+    // esta versiï¿½n.
     // =====================================================
 
     public void RestoreInterviewState(
         List<int> questions,
         List<int> findings,
-        bool completed
+        bool completed,
+        string savedViewState,
+        int savedSelectedQuestion,
+        string savedResponse
     )
     {
         answeredQuestions.Clear();
@@ -917,14 +1348,20 @@ public class InterviewController : MonoBehaviour
 
         interviewCompleted = completed;
 
-        selectedQuestion = 0;
+        if (savedSelectedQuestion >= 1 &&
+            savedSelectedQuestion <= 6)
+        {
+            selectedQuestion = savedSelectedQuestion;
+        }
+        else
+        {
+            selectedQuestion = 0;
+        }
 
         UpdateRegisteredData();
 
-        UpdateRegisterButtonState();
-
         // -------------------------------------------------
-        // ENTREVISTA AÚN NO CONFIRMADA
+        // ENTREVISTA Aï¿½N NO CONFIRMADA
         // -------------------------------------------------
 
         if (!interviewCompleted)
@@ -949,27 +1386,72 @@ public class InterviewController : MonoBehaviour
                 clinicalAssessmentPanel.SetActive(false);
             }
 
-            if (interviewSummaryPanel != null)
+            // Compatibilidad con guardados antiguos:
+            // si no existe estado visual, volver a entrevista.
+            string viewState =
+                string.IsNullOrWhiteSpace(savedViewState)
+                ? "Interview"
+                : savedViewState;
+
+            if (viewState == "Summary")
             {
-                interviewSummaryPanel.SetActive(false);
+                if (interviewPanel != null)
+                {
+                    interviewPanel.SetActive(false);
+                }
+
+                if (registeredDataPanel != null)
+                {
+                    registeredDataPanel.SetActive(false);
+                }
+
+                if (interviewSummaryPanel != null)
+                {
+                    UpdateInterviewSummary();
+                    interviewSummaryPanel.SetActive(true);
+                    interviewSummaryPanel.transform.SetAsLastSibling();
+                }
+
+                Debug.Log(
+                    "ENTREVISTA RESTAURADA EN RESUMEN."
+                );
+            }
+            else
+            {
+                if (interviewSummaryPanel != null)
+                {
+                    interviewSummaryPanel.SetActive(false);
+                }
+
+                if (interviewPanel != null)
+                {
+                    interviewPanel.SetActive(true);
+                }
+
+                if (registeredDataPanel != null)
+                {
+                    registeredDataPanel.SetActive(true);
+                }
+
+                if (!string.IsNullOrEmpty(savedResponse))
+                {
+                    SetResponse(savedResponse);
+                }
+                else
+                {
+                    SetResponse(InitialMessage);
+                }
+
+                Debug.Log(
+                    "ENTREVISTA RESTAURADA EN PANEL DE ENTREVISTA."
+                );
             }
 
-            if (interviewPanel != null)
-            {
-                interviewPanel.SetActive(true);
-            }
-
-            if (registeredDataPanel != null)
-            {
-                registeredDataPanel.SetActive(true);
-            }
-
-            SetResponse(InitialMessage);
+            UpdateRegisterButtonState();
 
             if (hudController != null)
             {
                 hudController.SetCurrentPhase("Entrevista");
-
                 hudController.SetUIInteractionMode(true);
             }
 
@@ -991,18 +1473,16 @@ public class InterviewController : MonoBehaviour
                 registeredFindings.Count +
                 " | ESENCIALES: " +
                 GetEssentialFindingsCount() +
-                "/4"
+                "/4 | VISTA: " +
+                viewState
             );
         }
         else
         {
             PreparePatientForClinicalAssessment();
 
-            // La entrevista ya había sido confirmada.
-            //
-            // NO abrimos automáticamente valoración aquí.
-            // La fase guardada será restaurada por
-            // ClinicalCaseFlowController / GameSaveLoader.
+            // La entrevista ya habï¿½a sido confirmada.
+            // No se abre nuevamente la entrevista ni el resumen.
 
             if (interviewPanel != null)
             {
@@ -1026,19 +1506,39 @@ public class InterviewController : MonoBehaviour
     }
 
     // =====================================================
+    // COMPATIBILIDAD CON LLAMADAS DE 3 PARï¿½METROS
+    // =====================================================
+
+    public void RestoreInterviewState(
+        List<int> questions,
+        List<int> findings,
+        bool completed
+    )
+    {
+        RestoreInterviewState(
+            questions,
+            findings,
+            completed,
+            "Interview",
+            0,
+            InitialMessage
+        );
+    }
+
+    // =====================================================
     // COMPATIBILIDAD CON GUARDADOS ANTIGUOS
     // =====================================================
     //
     // Actualmente GameSaveLoader puede seguir utilizando
-    // esta versión de dos parámetros.
+    // esta versiï¿½n de dos parï¿½metros.
     //
     // Los guardados anteriores usaban la misma lista
-    // tanto para información preguntada como registrada.
+    // tanto para informaciï¿½n preguntada como registrada.
     //
     // Por ello, temporalmente restauramos esos valores
     // en ambas colecciones.
     //
-    // Esto se cambiará cuando ampliemos SaveData.
+    // Esto se cambiarï¿½ cuando ampliemos SaveData.
     // =====================================================
 
     public void RestoreInterviewState(
