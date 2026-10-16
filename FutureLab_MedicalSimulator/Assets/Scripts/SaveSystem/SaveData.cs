@@ -23,15 +23,43 @@ public class SaveData
     // ==============================
 
     // false = la entrevista todavía no terminó.
-    // true = el participante pulsó CONTINUAR
-    // y pasó a Valoración Clínica.
+    // true = la entrevista ya fue confirmada.
     public bool interviewCompleted;
+
+    // Vista exacta en la que quedó la entrevista al guardar.
+    // Valores actuales:
+    // "Interview" = panel de entrevista
+    // "Summary"   = resumen de entrevista
+    // "Hidden"    = interfaz de entrevista cerrada
+    public string interviewViewState = "Interview";
+
+    // Pregunta que estaba seleccionada al momento de guardar.
+    // 0 = ninguna pregunta seleccionada.
+    public int selectedInterviewQuestion;
+
+    // Texto visible en la respuesta del paciente al guardar.
+    public string currentInterviewResponse;
 
     // ==============================
     // TIEMPO DEL CASO
     // ==============================
 
     public float elapsedTime;
+
+    // ==============================
+    // PENALIZACIONES DE TIEMPO
+    // ==============================
+
+    // Guarda los identificadores únicos de penalizaciones
+    // que ya fueron aplicadas durante este intento.
+    //
+    // Ejemplo:
+    // ENTREVISTA_INSUFICIENTE_2_DE_4
+    //
+    // Esto permite restaurar la partida sin aplicar
+    // nuevamente +05:00 por el mismo error.
+    public List<string> appliedPenaltyIds =
+        new List<string>();
 
     // ==============================
     // POSICIÓN DEL JUGADOR
@@ -50,6 +78,14 @@ public class SaveData
     // ==============================
 
     public List<int> answeredQuestions =
+        new List<int>();
+
+    // Hallazgos que el participante registró explícitamente
+    // mediante el botón "Registrar dato".
+    //
+    // Se guardan por separado de answeredQuestions porque
+    // preguntar algo no significa necesariamente registrarlo.
+    public List<int> registeredFindings =
         new List<int>();
 
     // ==============================

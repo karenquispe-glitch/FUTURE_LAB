@@ -109,42 +109,14 @@ public class GameSaveLoader : MonoBehaviour
             NormalizePhaseName(data.currentPhase);
 
         // =====================================================
-        // RESTAURAR ENTREVISTA SOLO SI CORRESPONDE
+        // 1. RESTAURAR PRIMERO LA FASE CENTRAL
         // =====================================================
-
-        if (
-            normalizedPhase == "Entrevista" &&
-            interviewController != null
-        )
-        {
-            interviewController.RestoreInterviewState(
-                data.answeredQuestions,
-                data.interviewCompleted
-            );
-
-            Debug.Log(
-                "ESTADO DE ENTREVISTA RESTAURADO."
-            );
-        }
-        else if (
-            normalizedPhase == "Entrevista" &&
-            interviewController == null
-        )
-        {
-            Debug.LogWarning(
-                "GameSaveLoader: InterviewController no asignado."
-            );
-        }
-        else
-        {
-            Debug.Log(
-                "LA PARTIDA NO ESTABA EN ENTREVISTA. " +
-                "NO SE ABRIRÁ LA ENTREVISTA AUTOMÁTICAMENTE."
-            );
-        }
-
-        // =====================================================
-        // RESTAURAR FASE EXACTA DEL CASO
+        //
+        // IMPORTANTE:
+        // Antes se restauraba la entrevista y DESPUÉS la fase.
+        // Eso podía volver a ocultar InterviewPanel.
+        //
+        // Ahora la fase se restaura primero.
         // =====================================================
 
         if (caseFlowController != null)
@@ -186,7 +158,7 @@ public class GameSaveLoader : MonoBehaviour
         }
 
         // =====================================================
-        // RESTAURAR HUD
+        // 2. RESTAURAR HUD
         // =====================================================
 
         if (hudController != null)
@@ -204,21 +176,58 @@ public class GameSaveLoader : MonoBehaviour
             );
         }
 
+        // Esperar un frame adicional para que los cambios
+        // de fase/HUD terminen antes de abrir la interfaz
+        // específica de la entrevista.
+        yield return null;
+
         // =====================================================
-        // FUTURAS RESTAURACIONES
+        // 3. RESTAURAR ENTREVISTA AL FINAL
+        // =====================================================
+        //
+        // La entrevista se restaura AL FINAL para asegurar que:
+        // - InterviewPanel quede visible;
+        // - RegisteredDataPanel quede visible;
+        // - el mouse quede libre;
+        // - se conserve answeredQuestions;
+        // - se conserve registeredFindings;
+        // - se recupere el progreso X/4.
         // =====================================================
 
-        // Cuando estén terminados e integrados
-        // los controladores de la Persona 2,
-        // aquí se restaurarán:
-        //
-        // data.completedAssessments
-        // data.requestedTests
-        // data.reviewedResults
-        // data.riskAlertTriggered
-        // data.bleedingEventLevel
-        // data.provisionalDiagnosis
-        // data.score
+        if (
+            normalizedPhase == "Entrevista" &&
+            interviewController != null
+        )
+        {
+            interviewController.RestoreInterviewState(
+                data.answeredQuestions,
+                data.registeredFindings,
+                data.interviewCompleted,
+                data.interviewViewState,
+                data.selectedInterviewQuestion,
+                data.currentInterviewResponse
+            );
+
+            Debug.Log(
+                "ESTADO DE ENTREVISTA RESTAURADO AL FINAL DEL PROCESO."
+            );
+        }
+        else if (
+            normalizedPhase == "Entrevista" &&
+            interviewController == null
+        )
+        {
+            Debug.LogWarning(
+                "GameSaveLoader: InterviewController no asignado."
+            );
+        }
+        else
+        {
+            Debug.Log(
+                "LA PARTIDA NO ESTABA EN ENTREVISTA. " +
+                "NO SE ABRIRÁ LA ENTREVISTA AUTOMÁTICAMENTE."
+            );
+        }
 
         // =====================================================
         // LIMPIAR PARTIDA PENDIENTE
