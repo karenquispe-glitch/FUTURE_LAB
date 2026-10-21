@@ -4,13 +4,12 @@ using UnityEngine.UI;
 
 public class ClinicalHandsAnimationController : MonoBehaviour
 {
-    [Header("Animator de las manos")]
+    [Header("Animator del conjunto clínico")]
     [SerializeField] private Animator handsAnimator;
 
-    [Header("Puntos de interacción")]
-    [SerializeField] private Transform palpationPoint;
-    [SerializeField] private Transform pulsePoint;
-    [SerializeField] private Transform bloodPressurePoint;
+    [Header("Controlador de valoración")]
+    [SerializeField]
+    private ClinicalAssessmentController clinicalAssessmentController;
 
     [Header("Panel de resultados")]
     [SerializeField] private GameObject inspectionResultsPanel;
@@ -26,6 +25,23 @@ public class ClinicalHandsAnimationController : MonoBehaviour
     private bool palpationCompleted;
     private bool pulseCompleted;
     private bool bloodPressureCompleted;
+
+    private const string PalpationState =
+        "Base Layer.PalpacionAbdominal";
+
+    private const string PulseState =
+        "Base Layer.TomarPulso";
+
+    private const string BloodPressureState =
+        "Base Layer.MedirPresion";
+
+    private void Awake()
+    {
+        if (handsAnimator != null)
+        {
+            handsAnimator.applyRootMotion = false;
+        }
+    }
 
     private void Start()
     {
@@ -46,16 +62,21 @@ public class ClinicalHandsAnimationController : MonoBehaviour
 
     public void PlayPalpation()
     {
-        if (!PrepareProcedure(palpationPoint))
+        if (!PlayAnimation(PalpationState))
         {
             return;
         }
 
-        ResetAllTriggers();
-        handsAnimator.SetTrigger("Palpacion");
-
         palpationCompleted = true;
+
+        if (clinicalAssessmentController != null)
+        {
+            clinicalAssessmentController.RegisterInspection();
+        }
+
         ShowResults();
+
+        Debug.Log("ANIMACIÓN DE PALPACIÓN EJECUTADA.");
     }
 
     // =====================================================
@@ -64,16 +85,21 @@ public class ClinicalHandsAnimationController : MonoBehaviour
 
     public void PlayPulse()
     {
-        if (!PrepareProcedure(pulsePoint))
+        if (!PlayAnimation(PulseState))
         {
             return;
         }
 
-        ResetAllTriggers();
-        handsAnimator.SetTrigger("TomarPulso");
-
         pulseCompleted = true;
+
+        if (clinicalAssessmentController != null)
+        {
+            clinicalAssessmentController.RegisterPulse();
+        }
+
         ShowResults();
+
+        Debug.Log("ANIMACIÓN DE PULSO EJECUTADA.");
     }
 
     // =====================================================
@@ -82,45 +108,83 @@ public class ClinicalHandsAnimationController : MonoBehaviour
 
     public void PlayBloodPressure()
     {
-        if (!PrepareProcedure(bloodPressurePoint))
+        if (!PlayAnimation(BloodPressureState))
         {
             return;
         }
 
-        ResetAllTriggers();
-        handsAnimator.SetTrigger("MedirPresion");
-
         bloodPressureCompleted = true;
+
+        if (clinicalAssessmentController != null)
+        {
+            clinicalAssessmentController.RegisterBloodPressure();
+        }
+
         ShowResults();
+
+        Debug.Log("ANIMACIÓN DE PRESIÓN ARTERIAL EJECUTADA.");
     }
 
     // =====================================================
-    // PREPARAR PROCEDIMIENTO
+    // REPRODUCIR ESTADO DIRECTAMENTE
     // =====================================================
 
-    private bool PrepareProcedure(Transform targetPoint)
+    private bool PlayAnimation(string stateName)
     {
         if (handsAnimator == null)
         {
             Debug.LogError(
-                "No se asignó el Animator de las manos."
+                "ClinicalHandsAnimationController: " +
+                "no se asignó Hands Animator."
             );
 
             return false;
         }
 
-        if (targetPoint == null)
+        if (!handsAnimator.gameObject.activeInHierarchy)
         {
             Debug.LogError(
-                "No se asignó el punto de interacción."
+                "ClinicalHandsAnimationController: " +
+                "ClinicalInspectionHands_NEW está desactivado."
             );
 
             return false;
         }
 
-        // Cambiar únicamente la posición.
-        // La orientación original se mantiene.
-        transform.position = targetPoint.position;
+        if (handsAnimator.runtimeAnimatorController == null)
+        {
+            Debug.LogError(
+                "ClinicalHandsAnimationController: " +
+                "el Animator nuevo no tiene Animator Controller."
+            );
+
+            return false;
+        }
+
+        int stateHash = Animator.StringToHash(stateName);
+
+        if (!handsAnimator.HasState(0, stateHash))
+        {
+            Debug.LogError(
+                "No se encontró el estado '" +
+                stateName +
+                "' en la capa 0 del Animator."
+            );
+
+            return false;
+        }
+
+        handsAnimator.enabled = true;
+        handsAnimator.applyRootMotion = false;
+
+        // Reproduce el estado desde el primer fotograma.
+        handsAnimator.Play(stateHash, 0, 0f);
+        handsAnimator.Update(0f);
+
+        Debug.Log(
+            "Estado enviado al Animator: " +
+            stateName
+        );
 
         return true;
     }
@@ -176,7 +240,6 @@ public class ClinicalHandsAnimationController : MonoBehaviour
 
         inspectionResultsText.text = results;
 
-        // Una inspección es suficiente para continuar.
         if (finishInspectionButton != null)
         {
             finishInspectionButton.interactable =
@@ -206,6 +269,11 @@ public class ClinicalHandsAnimationController : MonoBehaviour
             return;
         }
 
+        if (clinicalAssessmentController != null)
+        {
+            clinicalAssessmentController.FinishClinicalAssessment();
+        }
+
         if (laboratoryUIController == null)
         {
             Debug.LogError(
@@ -215,15 +283,9 @@ public class ClinicalHandsAnimationController : MonoBehaviour
             return;
         }
 
-        ResetAllTriggers();
-
-        // Habilitar el botón de laboratorio existente.
         laboratoryUIController.EnableAfterAssessment();
-
-        // Abrir directamente la selección de laboratorio.
         laboratoryUIController.OpenLaboratory();
 
-        // Cerrar la interfaz de inspección.
         if (clinicalAssessmentPanel != null)
         {
             clinicalAssessmentPanel.SetActive(false);
@@ -232,21 +294,5 @@ public class ClinicalHandsAnimationController : MonoBehaviour
         Debug.Log(
             "INSPECCIÓN FINALIZADA. LABORATORIO HABILITADO."
         );
-    }
-
-    // =====================================================
-    // LIMPIAR TRIGGERS
-    // =====================================================
-
-    private void ResetAllTriggers()
-    {
-        if (handsAnimator == null)
-        {
-            return;
-        }
-
-        handsAnimator.ResetTrigger("Palpacion");
-        handsAnimator.ResetTrigger("TomarPulso");
-        handsAnimator.ResetTrigger("MedirPresion");
     }
 }

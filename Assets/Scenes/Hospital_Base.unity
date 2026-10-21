@@ -6821,6 +6821,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logProgress: 1
+  normalPatientModel: {fileID: 0}
+  clinicalAssessmentSetup: {fileID: 0}
+  clinicalAnimator: {fileID: 0}
 --- !u!1 &550825126
 GameObject:
   m_ObjectHideFlags: 0
@@ -7825,7 +7828,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 947132735}
   m_HandleRect: {fileID: 947132734}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -13634,6 +13637,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1351294870}
     m_Modifications:
+    - target: {fileID: -8767149924976115768, guid: eefaba6d1f97a6840a479ef33fbb89cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: eefaba6d1f97a6840a479ef33fbb89cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13684,10 +13692,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2196677004241826631, guid: eefaba6d1f97a6840a479ef33fbb89cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -129812510527466252, guid: eefaba6d1f97a6840a479ef33fbb89cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: eefaba6d1f97a6840a479ef33fbb89cf,
         type: 3}
       propertyPath: m_Name
-      value: ClinicalInspectionHands
+      value: ClinicalInspectionHands_CONTROLLER
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eefaba6d1f97a6840a479ef33fbb89cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13722,7 +13745,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1020391026}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 99714d41b1bba314c9918b799daee481, type: 2}
   m_CullingMode: 0
@@ -13747,10 +13770,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b771699cb5e814499fed2455db89157, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handsAnimator: {fileID: 1020391027}
-  palpationPoint: {fileID: 1473318897}
-  pulsePoint: {fileID: 2123510696}
-  bloodPressurePoint: {fileID: 1988186469}
+  handsAnimator: {fileID: 2055630983}
+  clinicalAssessmentController: {fileID: 1764419503}
   inspectionResultsPanel: {fileID: 2051551349}
   inspectionResultsText: {fileID: 1743593093}
   finishInspectionButton: {fileID: 908222036}
@@ -23110,6 +23131,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1764419503}
+        m_TargetAssemblyTypeName: ClinicalAssessmentController, Assembly-CSharp
+        m_MethodName: StartClinicalAssessment
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1539692444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23342,12 +23375,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: eefaba6d1f97a6840a479ef33fbb89cf,
         type: 3}
       propertyPath: m_Name
-      value: ClinicalInspectionHands
+      value: ClinicalInspectionHands_OLD
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: eefaba6d1f97a6840a479ef33fbb89cf,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1308553541708506513, guid: eefaba6d1f97a6840a479ef33fbb89cf,
         type: 3}
@@ -23432,9 +23465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handsAnimator: {fileID: 1545970396}
-  palpationPoint: {fileID: 0}
-  pulsePoint: {fileID: 0}
-  bloodPressurePoint: {fileID: 0}
+  clinicalAssessmentController: {fileID: 0}
   inspectionResultsPanel: {fileID: 0}
   inspectionResultsText: {fileID: 0}
   finishInspectionButton: {fileID: 0}
@@ -26038,6 +26069,54 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1087141824374055877, guid: 4264e83d6d861f44794943db0e81b7f7, type: 3}
+--- !u!1 &1764419502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1764419504}
+  - component: {fileID: 1764419503}
+  m_Layer: 0
+  m_Name: ClinicalAssessmentManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1764419503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764419502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac953f8af37a4b549849bdb41ece4123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logProgress: 1
+  normalPatientModel: {fileID: 1380553216}
+  clinicalAssessmentSetup: {fileID: 1886279412}
+  clinicalAnimator: {fileID: 2055630983}
+--- !u!4 &1764419504
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764419502}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -26.094032, y: 5.3243666, z: -32.309177}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1770086034
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26844,6 +26923,38 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -317230790780921366, guid: 4264e83d6d861f44794943db0e81b7f7, type: 3}
+--- !u!1 &1886279412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1886279413}
+  m_Layer: 0
+  m_Name: ClinicalAssessmentSetup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1886279413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886279412}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.6731252, z: -0, w: 0.7395286}
+  m_LocalPosition: {x: -21.917, y: 1.354, z: -25.062}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2055630982}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1889814581
 GameObject:
   m_ObjectHideFlags: 0
@@ -29310,7 +29421,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2040681541
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29494,6 +29605,106 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2051551349}
   m_CullTransparentMesh: 1
+--- !u!1001 &2055630981
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1886279413}
+    m_Modifications:
+    - target: {fileID: -8989875323351830499, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7409424846342233334, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_Name
+      value: ClinicalInspectionHands_NEW
+      objectReference: {fileID: 0}
+    - target: {fileID: 4194648163136435978, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: e789a921b19888343ae791691a1f92f4,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 99714d41b1bba314c9918b799daee481, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e789a921b19888343ae791691a1f92f4, type: 3}
+--- !u!4 &2055630982 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e789a921b19888343ae791691a1f92f4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2055630981}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2055630983 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: e789a921b19888343ae791691a1f92f4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2055630981}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2058652675 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2119853051640988661, guid: 151c51f08342c5b47816a22ced1f7cbc,
@@ -30548,7 +30759,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 594346f76b76ca54686f5d2e714d237b,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 594346f76b76ca54686f5d2e714d237b,
         type: 3}
@@ -31236,3 +31447,5 @@ SceneRoots:
   - {fileID: 1889814583}
   - {fileID: 1628430151}
   - {fileID: 1380553215}
+  - {fileID: 1886279413}
+  - {fileID: 1764419504}
