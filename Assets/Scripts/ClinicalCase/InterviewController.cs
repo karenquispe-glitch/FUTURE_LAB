@@ -51,6 +51,14 @@ public class InterviewController : MonoBehaviour
     [SerializeField] private ClinicalCaseFlowController caseFlowController;
 
     // =====================================================
+    // PACIENTE
+    // =====================================================
+
+    [Header("Cambio de paciente")]
+    [SerializeField] private GameObject pacienteAnimado;
+    [SerializeField] private GameObject pacienteValoracion;
+
+    // =====================================================
     // VARIABLES DE LA ENTREVISTA
     // =====================================================
 
@@ -123,6 +131,18 @@ public class InterviewController : MonoBehaviour
 
     private void Start()
     {
+        // Al comenzar se muestra el paciente original animado.
+        if (pacienteAnimado != null)
+        {
+            pacienteAnimado.SetActive(true);
+        }
+
+        // El paciente quieto se utilizará después de la entrevista.
+        if (pacienteValoracion != null)
+        {
+            pacienteValoracion.SetActive(false);
+        }
+
         if (interviewPanel != null)
         {
             interviewPanel.SetActive(false);
@@ -720,6 +740,8 @@ public class InterviewController : MonoBehaviour
 
         if (interviewSummaryPanel != null)
         {
+            PreparePatientForClinicalAssessment();
+
             if (interviewPanel != null)
             {
                 interviewPanel.SetActive(false);
@@ -757,6 +779,27 @@ public class InterviewController : MonoBehaviour
                 "La entrevista está lista para mostrar su resumen."
             );
         }
+    }
+
+    // =====================================================
+    // PREPARAR PACIENTE PARA VALORACIÓN CLÍNICA
+    // =====================================================
+
+    private void PreparePatientForClinicalAssessment()
+    {
+        if (pacienteAnimado != null)
+        {
+            pacienteAnimado.SetActive(false);
+        }
+
+        if (pacienteValoracion != null)
+        {
+            pacienteValoracion.SetActive(true);
+        }
+
+        Debug.Log(
+            "PACIENTE DE VALORACIÓN ACTIVADO."
+        );
     }
 
     // =====================================================
@@ -886,6 +929,16 @@ public class InterviewController : MonoBehaviour
 
         if (!interviewCompleted)
         {
+            if (pacienteAnimado != null)
+            {
+                pacienteAnimado.SetActive(true);
+            }
+
+            if (pacienteValoracion != null)
+            {
+                pacienteValoracion.SetActive(false);
+            }
+
             if (patientInfoPanel != null)
             {
                 patientInfoPanel.SetActive(false);
@@ -943,6 +996,8 @@ public class InterviewController : MonoBehaviour
         }
         else
         {
+            PreparePatientForClinicalAssessment();
+
             // La entrevista ya había sido confirmada.
             //
             // NO abrimos automáticamente valoración aquí.

@@ -1,6 +1,6 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class DiagnosisController : MonoBehaviour
 {
@@ -8,6 +8,7 @@ public class DiagnosisController : MonoBehaviour
     [SerializeField] private GameObject diagnosisPanel;
 
     [Header("Opciones de diagnóstico")]
+    // Se conservan estos nombres para no perder las referencias del Inspector.
     [SerializeField] private Button btnPolicitemiaVera;
     [SerializeField] private Button btnAnemiaFerropenica;
     [SerializeField] private Button btnLeucemiaMieloideCronica;
@@ -20,59 +21,74 @@ public class DiagnosisController : MonoBehaviour
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color selectedColor = Color.cyan;
 
-    // =====================================================
-    // GAME OVER
-    // =====================================================
-
     [Header("Game Over")]
     [SerializeField] private GameOverController gameOverController;
+
+    private const string CorrectDiagnosis =
+        "Leucemia promielocítica aguda";
+
+    private const string AcuteMyeloidLeukemia =
+        "Leucemia mieloide aguda";
+
+    private const string ChronicMyeloidLeukemia =
+        "Leucemia mieloide crónica";
+
+    private const string ImmuneThrombocytopenicPurpura =
+        "Púrpura trombocitopénica inmune";
 
     private string selectedDiagnosis = "";
 
     private void Awake()
     {
-        // Conectar automáticamente los botones.
-        if (btnPolicitemiaVera != null)
-        {
-            btnPolicitemiaVera.onClick.AddListener(
-                () => SelectDiagnosis("Policitemia vera")
-            );
-        }
+        ConfigureButton(
+            btnPolicitemiaVera,
+            CorrectDiagnosis
+        );
 
-        if (btnAnemiaFerropenica != null)
-        {
-            btnAnemiaFerropenica.onClick.AddListener(
-                () => SelectDiagnosis("Anemia ferropénica")
-            );
-        }
+        ConfigureButton(
+            btnAnemiaFerropenica,
+            AcuteMyeloidLeukemia
+        );
 
-        if (btnLeucemiaMieloideCronica != null)
-        {
-            btnLeucemiaMieloideCronica.onClick.AddListener(
-                () => SelectDiagnosis("Leucemia mieloide crónica")
-            );
-        }
+        ConfigureButton(
+            btnLeucemiaMieloideCronica,
+            ChronicMyeloidLeukemia
+        );
 
-        if (btnTrombocitemiaEsencial != null)
-        {
-            btnTrombocitemiaEsencial.onClick.AddListener(
-                () => SelectDiagnosis("Trombocitemia esencial")
-            );
-        }
+        ConfigureButton(
+            btnTrombocitemiaEsencial,
+            ImmuneThrombocytopenicPurpura
+        );
 
         if (btnConfirmDiagnosis != null)
         {
-            btnConfirmDiagnosis.onClick.AddListener(
-                ConfirmDiagnosis
-            );
+            btnConfirmDiagnosis.onClick.RemoveListener(ConfirmDiagnosis);
+            btnConfirmDiagnosis.onClick.AddListener(ConfirmDiagnosis);
         }
 
         ResetSelection();
     }
 
-    // =====================================================
-    // MOSTRAR VENTANA DE DIAGNÓSTICO
-    // =====================================================
+    private void ConfigureButton(Button button, string diagnosis)
+    {
+        if (button == null)
+        {
+            return;
+        }
+
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(
+            () => SelectDiagnosis(diagnosis)
+        );
+
+        TMP_Text buttonText =
+            button.GetComponentInChildren<TMP_Text>(true);
+
+        if (buttonText != null)
+        {
+            buttonText.text = diagnosis;
+        }
+    }
 
     public void OpenDiagnosis()
     {
@@ -89,39 +105,16 @@ public class DiagnosisController : MonoBehaviour
         Debug.Log("VENTANA DE DIAGNÓSTICO ABIERTA.");
     }
 
-    // =====================================================
-    // SELECCIONAR DIAGNÓSTICO
-    // =====================================================
-
     private void SelectDiagnosis(string diagnosis)
     {
         selectedDiagnosis = diagnosis;
-
         ResetButtonColors();
 
-        Button selectedButton = null;
-
-        if (diagnosis == "Policitemia vera")
-        {
-            selectedButton = btnPolicitemiaVera;
-        }
-        else if (diagnosis == "Anemia ferropénica")
-        {
-            selectedButton = btnAnemiaFerropenica;
-        }
-        else if (diagnosis == "Leucemia mieloide crónica")
-        {
-            selectedButton = btnLeucemiaMieloideCronica;
-        }
-        else if (diagnosis == "Trombocitemia esencial")
-        {
-            selectedButton = btnTrombocitemiaEsencial;
-        }
+        Button selectedButton = GetButtonForDiagnosis(diagnosis);
 
         if (selectedButton != null)
         {
-            Image image =
-                selectedButton.GetComponent<Image>();
+            Image image = selectedButton.GetComponent<Image>();
 
             if (image != null)
             {
@@ -130,14 +123,26 @@ public class DiagnosisController : MonoBehaviour
         }
 
         Debug.Log(
-            "DIAGNÓSTICO SELECCIONADO: " +
-            selectedDiagnosis
+            "DIAGNÓSTICO SELECCIONADO: " + selectedDiagnosis
         );
     }
 
-    // =====================================================
-    // CONFIRMAR DIAGNÓSTICO
-    // =====================================================
+    private Button GetButtonForDiagnosis(string diagnosis)
+    {
+        if (diagnosis == CorrectDiagnosis)
+            return btnPolicitemiaVera;
+
+        if (diagnosis == AcuteMyeloidLeukemia)
+            return btnAnemiaFerropenica;
+
+        if (diagnosis == ChronicMyeloidLeukemia)
+            return btnLeucemiaMieloideCronica;
+
+        if (diagnosis == ImmuneThrombocytopenicPurpura)
+            return btnTrombocitemiaEsencial;
+
+        return null;
+    }
 
     private void ConfirmDiagnosis()
     {
@@ -146,23 +151,17 @@ public class DiagnosisController : MonoBehaviour
             Debug.LogWarning(
                 "DEBES SELECCIONAR UN DIAGNÓSTICO."
             );
-
             return;
         }
 
         Debug.Log(
-            "DIAGNÓSTICO CONFIRMADO: " +
-            selectedDiagnosis
+            "DIAGNÓSTICO CONFIRMADO: " + selectedDiagnosis
         );
 
-        // ================================================
-        // DIAGNÓSTICO CORRECTO
-        // ================================================
-
-        if (selectedDiagnosis == "Policitemia vera")
+        if (selectedDiagnosis == CorrectDiagnosis)
         {
             Debug.Log(
-                "DIAGNÓSTICO CORRECTO."
+                "DIAGNÓSTICO CORRECTO: " + CorrectDiagnosis
             );
 
             if (diagnosisPanel != null)
@@ -173,23 +172,14 @@ public class DiagnosisController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            // AQUÍ posteriormente conectaremos
-            // la siguiente fase del caso.
+            // En el siguiente paso se conectará aquí la victoria.
         }
-
-        // ================================================
-        // DIAGNÓSTICO INCORRECTO
-        // ================================================
-
         else
         {
             Debug.Log(
-                "DIAGNÓSTICO INCORRECTO."
+                "DIAGNÓSTICO INCORRECTO. La respuesta correcta era: " +
+                CorrectDiagnosis
             );
-
-            // ============================================
-            // GAME OVER
-            // ============================================
 
             if (gameOverController != null)
             {
@@ -198,59 +188,34 @@ public class DiagnosisController : MonoBehaviour
             else
             {
                 Debug.LogError(
-                    "DiagnosisController: falta asignar " +
-                    "GameOverController."
+                    "DiagnosisController: falta asignar GameOverController."
                 );
             }
         }
     }
 
-    // =====================================================
-    // RESTABLECER SELECCIÓN
-    // =====================================================
-
     private void ResetSelection()
     {
         selectedDiagnosis = "";
-
         ResetButtonColors();
     }
 
     private void ResetButtonColors()
     {
-        SetButtonColor(
-            btnPolicitemiaVera,
-            normalColor
-        );
-
-        SetButtonColor(
-            btnAnemiaFerropenica,
-            normalColor
-        );
-
-        SetButtonColor(
-            btnLeucemiaMieloideCronica,
-            normalColor
-        );
-
-        SetButtonColor(
-            btnTrombocitemiaEsencial,
-            normalColor
-        );
+        SetButtonColor(btnPolicitemiaVera, normalColor);
+        SetButtonColor(btnAnemiaFerropenica, normalColor);
+        SetButtonColor(btnLeucemiaMieloideCronica, normalColor);
+        SetButtonColor(btnTrombocitemiaEsencial, normalColor);
     }
 
-    private void SetButtonColor(
-        Button button,
-        Color color
-    )
+    private void SetButtonColor(Button button, Color color)
     {
         if (button == null)
         {
             return;
         }
 
-        Image image =
-            button.GetComponent<Image>();
+        Image image = button.GetComponent<Image>();
 
         if (image != null)
         {
@@ -258,22 +223,12 @@ public class DiagnosisController : MonoBehaviour
         }
     }
 
-    // =====================================================
-    // OBTENER DIAGNÓSTICO SELECCIONADO
-    // =====================================================
-
     public string GetSelectedDiagnosis()
     {
         return selectedDiagnosis;
     }
 
-    // =====================================================
-    // RESTAURAR DIAGNÓSTICO GUARDADO
-    // =====================================================
-
-    public void RestoreDiagnosis(
-        string diagnosis
-    )
+    public void RestoreDiagnosis(string diagnosis)
     {
         if (string.IsNullOrEmpty(diagnosis))
         {

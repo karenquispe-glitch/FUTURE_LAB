@@ -10,6 +10,7 @@ public class LaboratoryUIController : MonoBehaviour
     [Header("Controladores existentes")]
     [SerializeField] private HUDController hudController;
     [SerializeField] private LabTestController labTestController;
+    [SerializeField] private DiagnosisController diagnosisController;
 
     [Header("Paneles y textos")]
     [SerializeField] private GameObject labSelectionPanel;
@@ -55,8 +56,6 @@ public class LaboratoryUIController : MonoBehaviour
             mainButton.image.sprite = requestLaboratorySprite;
     }
 
-    // Mantiene la funcion On Click ya configurada en el boton del HUD.
-    // Despues de procesar, el mismo boton abre los resultados.
     public void OpenLaboratory()
     {
         if (processing)
@@ -119,7 +118,6 @@ public class LaboratoryUIController : MonoBehaviour
 
         foreach (LabTestController.LabTest test in selectedTests)
         {
-            // Evita solicitar de nuevo una prueba ya registrada.
             if (labTestController.IsTestRequested(test) ||
                 labTestController.RequestTest(test))
             {
@@ -130,8 +128,7 @@ public class LaboratoryUIController : MonoBehaviour
         if (acceptedTests.Count == 0)
         {
             Debug.LogWarning(
-                "No se registraron pruebas. Comprueba que la valoracion clinica " +
-                "se haya completado y que Assessment Controller este asignado."
+                "No se registraron pruebas de laboratorio."
             );
             return;
         }
@@ -165,7 +162,6 @@ public class LaboratoryUIController : MonoBehaviour
         mainButton.interactable = false;
         SetUIMode(true);
 
-        // Tiempo del juego: tambien se detiene si el jugador pausa.
         yield return new WaitForSeconds(5f);
 
         processingText.gameObject.SetActive(false);
@@ -178,6 +174,8 @@ public class LaboratoryUIController : MonoBehaviour
             Debug.LogWarning("Falta asignar la imagen REVISAR RESULTADOS.");
 
         mainButton.interactable = true;
+        SetUIMode(false);
+
         Debug.Log("Laboratorio listo: puedes revisar los resultados.");
     }
 
@@ -188,7 +186,6 @@ public class LaboratoryUIController : MonoBehaviour
 
         if (!resultsReviewed)
         {
-            // La primera apertura registra la revision en la logica existente.
             foreach (LabTestController.LabTest test in acceptedTests)
                 ReviewRequestedTest(test);
 
@@ -207,18 +204,43 @@ public class LaboratoryUIController : MonoBehaviour
 
         resultsText.text = content.ToString();
         labResultsPanel.SetActive(true);
+
+        if (mainButton != null)
+            mainButton.gameObject.SetActive(false);
+
         SetUIMode(true);
     }
 
+    // Al cerrar los resultados comienza inmediatamente el diagnóstico.
     public void CloseResults()
     {
         if (labResultsPanel != null)
             labResultsPanel.SetActive(false);
 
-        SetUIMode(false);
+        if (labSelectionPanel != null)
+            labSelectionPanel.SetActive(false);
+
+        if (mainButton != null)
+            mainButton.gameObject.SetActive(false);
+
+        if (diagnosisController != null)
+        {
+            SetUIMode(true);
+            diagnosisController.OpenDiagnosis();
+
+            Debug.Log(
+                "LABORATORIO FINALIZADO. INICIANDO DIAGNÓSTICO."
+            );
+        }
+        else
+        {
+            Debug.LogError(
+                "LaboratoryUIController: falta asignar DiagnosisController."
+            );
+            SetUIMode(false);
+        }
     }
 
-    // Llamar desde el fin de la valoracion clinica cuando este integrado.
     public void EnableAfterAssessment()
     {
         if (mainButton != null)
@@ -246,8 +268,6 @@ public class LaboratoryUIController : MonoBehaviour
 
     private string GetResultText(LabTestController.LabTest test)
     {
-        // Estos datos corresponden al LabTestController actual.
-        // Deben validarse con el equipo antes de usar otro caso clinico.
         switch (test)
         {
             case LabTestController.LabTest.Hemogram:
