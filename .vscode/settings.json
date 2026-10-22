@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "FutureLab_MedicalSimulator.sln"
+    "dotnet.defaultSolution": "FUTURE_LAB.sln"
 }

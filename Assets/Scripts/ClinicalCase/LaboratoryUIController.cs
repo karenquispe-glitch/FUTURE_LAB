@@ -56,13 +56,25 @@ public class LaboratoryUIController : MonoBehaviour
             mainButton.image.sprite = requestLaboratorySprite;
     }
 
+   
     public void OpenLaboratory()
     {
+        Debug.Log(
+            "OpenLaboratory ejecutado. " +
+            "processing=" + processing +
+            ", resultsReady=" + resultsReady
+        );
+
         if (processing)
+        {
+            Debug.LogWarning("El laboratorio sigue procesando.");
             return;
+        }
 
         if (resultsReady)
         {
+            Debug.Log("Intentando mostrar los resultados.");
+
             ShowLaboratoryResults();
             return;
         }
@@ -76,6 +88,7 @@ public class LaboratoryUIController : MonoBehaviour
         labSelectionPanel.SetActive(true);
         SetUIMode(true);
     }
+
 
     public void CloseLaboratory()
     {
@@ -174,15 +187,32 @@ public class LaboratoryUIController : MonoBehaviour
             Debug.LogWarning("Falta asignar la imagen REVISAR RESULTADOS.");
 
         mainButton.interactable = true;
-        SetUIMode(false);
+        
+        // ¡CAMBIA ESTO! Deja el mouse libre para que el jugador pueda hacer clic.
+        SetUIMode(true); // En lugar de SetUIMode(false);
 
         Debug.Log("Laboratorio listo: puedes revisar los resultados.");
     }
-
+ // Agrega estos Debug.LogError para saber exactamente qué está fallando
     public void ShowLaboratoryResults()
     {
-        if (!resultsReady || labResultsPanel == null || resultsText == null)
+        if (!resultsReady)
+        {
+            Debug.LogError("No se muestran resultados porque 'resultsReady' es false. El laboratorio no ha procesado nada aún.");
             return;
+        }
+
+        if (labResultsPanel == null)
+        {
+            Debug.LogError("Falta asignar 'Lab Results Panel' en el Inspector de LaboratoryUIController.");
+            return;
+        }
+
+        if (resultsText == null)
+        {
+            Debug.LogError("Falta asignar 'Results Text' en el Inspector de LaboratoryUIController.");
+            return;
+        }
 
         if (!resultsReviewed)
         {
