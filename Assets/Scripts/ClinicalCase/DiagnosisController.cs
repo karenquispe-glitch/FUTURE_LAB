@@ -4,11 +4,17 @@ using UnityEngine.UI;
 
 public class DiagnosisController : MonoBehaviour
 {
-    [Header("Panel")]
+    [Header("Panel de diagnóstico")]
     [SerializeField] private GameObject diagnosisPanel;
 
+    [Header("Panel de victoria")]
+    [SerializeField] private GameObject victoryPanel;
+
+    [Header("Interfaz que debe ocultarse al finalizar")]
+    [SerializeField] private GameObject hudPanel;
+
     [Header("Opciones de diagnóstico")]
-    // Se conservan estos nombres para no perder las referencias del Inspector.
+    // Se conservan estos nombres para no perder referencias del Inspector.
     [SerializeField] private Button btnPolicitemiaVera;
     [SerializeField] private Button btnAnemiaFerropenica;
     [SerializeField] private Button btnLeucemiaMieloideCronica;
@@ -18,8 +24,13 @@ public class DiagnosisController : MonoBehaviour
     [SerializeField] private Button btnConfirmDiagnosis;
 
     [Header("Colores de selección")]
-    [SerializeField] private Color normalColor = Color.white;
-    [SerializeField] private Color selectedColor = Color.cyan;
+    [SerializeField]
+    private Color normalColor =
+        new Color32(9, 42, 67, 255);
+
+    [SerializeField]
+    private Color selectedColor =
+        new Color32(8, 127, 121, 255);
 
     [Header("Game Over")]
     [SerializeField] private GameOverController gameOverController;
@@ -62,14 +73,26 @@ public class DiagnosisController : MonoBehaviour
 
         if (btnConfirmDiagnosis != null)
         {
-            btnConfirmDiagnosis.onClick.RemoveListener(ConfirmDiagnosis);
-            btnConfirmDiagnosis.onClick.AddListener(ConfirmDiagnosis);
+            btnConfirmDiagnosis.onClick.RemoveListener(
+                ConfirmDiagnosis
+            );
+
+            btnConfirmDiagnosis.onClick.AddListener(
+                ConfirmDiagnosis
+            );
+        }
+
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(false);
         }
 
         ResetSelection();
     }
 
-    private void ConfigureButton(Button button, string diagnosis)
+    private void ConfigureButton(
+        Button button,
+        string diagnosis)
     {
         if (button == null)
         {
@@ -77,6 +100,7 @@ public class DiagnosisController : MonoBehaviour
         }
 
         button.onClick.RemoveAllListeners();
+
         button.onClick.AddListener(
             () => SelectDiagnosis(diagnosis)
         );
@@ -92,9 +116,15 @@ public class DiagnosisController : MonoBehaviour
 
     public void OpenDiagnosis()
     {
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(false);
+        }
+
         if (diagnosisPanel != null)
         {
             diagnosisPanel.SetActive(true);
+            diagnosisPanel.transform.SetAsLastSibling();
         }
 
         ResetSelection();
@@ -108,38 +138,48 @@ public class DiagnosisController : MonoBehaviour
     private void SelectDiagnosis(string diagnosis)
     {
         selectedDiagnosis = diagnosis;
+
         ResetButtonColors();
 
-        Button selectedButton = GetButtonForDiagnosis(diagnosis);
+        Button selectedButton =
+            GetButtonForDiagnosis(diagnosis);
 
         if (selectedButton != null)
         {
-            Image image = selectedButton.GetComponent<Image>();
-
-            if (image != null)
-            {
-                image.color = selectedColor;
-            }
+            SetButtonColor(
+                selectedButton,
+                selectedColor
+            );
         }
 
         Debug.Log(
-            "DIAGNÓSTICO SELECCIONADO: " + selectedDiagnosis
+            "DIAGNÓSTICO SELECCIONADO: " +
+            selectedDiagnosis
         );
     }
 
     private Button GetButtonForDiagnosis(string diagnosis)
     {
         if (diagnosis == CorrectDiagnosis)
+        {
             return btnPolicitemiaVera;
+        }
 
         if (diagnosis == AcuteMyeloidLeukemia)
+        {
             return btnAnemiaFerropenica;
+        }
 
         if (diagnosis == ChronicMyeloidLeukemia)
+        {
             return btnLeucemiaMieloideCronica;
+        }
 
-        if (diagnosis == ImmuneThrombocytopenicPurpura)
+        if (diagnosis ==
+            ImmuneThrombocytopenicPurpura)
+        {
             return btnTrombocitemiaEsencial;
+        }
 
         return null;
     }
@@ -151,47 +191,90 @@ public class DiagnosisController : MonoBehaviour
             Debug.LogWarning(
                 "DEBES SELECCIONAR UN DIAGNÓSTICO."
             );
+
             return;
         }
 
         Debug.Log(
-            "DIAGNÓSTICO CONFIRMADO: " + selectedDiagnosis
+            "DIAGNÓSTICO CONFIRMADO: " +
+            selectedDiagnosis
         );
 
         if (selectedDiagnosis == CorrectDiagnosis)
         {
-            Debug.Log(
-                "DIAGNÓSTICO CORRECTO: " + CorrectDiagnosis
-            );
-
-            if (diagnosisPanel != null)
-            {
-                diagnosisPanel.SetActive(false);
-            }
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            // En el siguiente paso se conectará aquí la victoria.
+            ShowVictory();
         }
         else
         {
-            Debug.Log(
-                "DIAGNÓSTICO INCORRECTO. La respuesta correcta era: " +
-                CorrectDiagnosis
-            );
-
-            if (gameOverController != null)
-            {
-                gameOverController.GameOverDiagnosis();
-            }
-            else
-            {
-                Debug.LogError(
-                    "DiagnosisController: falta asignar GameOverController."
-                );
-            }
+            ShowDefeat();
         }
+    }
+
+    private void ShowVictory()
+    {
+        Debug.Log(
+            "DIAGNÓSTICO CORRECTO: " +
+            CorrectDiagnosis
+        );
+
+        if (diagnosisPanel != null)
+        {
+            diagnosisPanel.SetActive(false);
+        }
+
+        if (hudPanel != null)
+        {
+            hudPanel.SetActive(false);
+        }
+
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(true);
+            victoryPanel.transform.SetAsLastSibling();
+        }
+        else
+        {
+            Debug.LogError(
+                "DiagnosisController: falta asignar VictoryPanel."
+            );
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void ShowDefeat()
+    {
+        Debug.Log(
+            "DIAGNÓSTICO INCORRECTO. " +
+            "La respuesta correcta era: " +
+            CorrectDiagnosis
+        );
+
+        if (diagnosisPanel != null)
+        {
+            diagnosisPanel.SetActive(false);
+        }
+
+        if (hudPanel != null)
+        {
+            hudPanel.SetActive(false);
+        }
+
+        if (gameOverController != null)
+        {
+            gameOverController.GameOverDiagnosis();
+        }
+        else
+        {
+            Debug.LogError(
+                "DiagnosisController: falta asignar " +
+                "GameOverController."
+            );
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void ResetSelection()
@@ -202,13 +285,30 @@ public class DiagnosisController : MonoBehaviour
 
     private void ResetButtonColors()
     {
-        SetButtonColor(btnPolicitemiaVera, normalColor);
-        SetButtonColor(btnAnemiaFerropenica, normalColor);
-        SetButtonColor(btnLeucemiaMieloideCronica, normalColor);
-        SetButtonColor(btnTrombocitemiaEsencial, normalColor);
+        SetButtonColor(
+            btnPolicitemiaVera,
+            normalColor
+        );
+
+        SetButtonColor(
+            btnAnemiaFerropenica,
+            normalColor
+        );
+
+        SetButtonColor(
+            btnLeucemiaMieloideCronica,
+            normalColor
+        );
+
+        SetButtonColor(
+            btnTrombocitemiaEsencial,
+            normalColor
+        );
     }
 
-    private void SetButtonColor(Button button, Color color)
+    private void SetButtonColor(
+        Button button,
+        Color color)
     {
         if (button == null)
         {

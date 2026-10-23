@@ -3,11 +3,15 @@
   "WorkspaceRootPath": "D:\\FUTURE_LAB\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\assets\\scripts\\clinicalcase\\clinicalhandsanimationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\assets\\scripts\\clinicalcase\\diagnosiscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\diagnosiscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|d:\\future_lab\\assets\\scripts\\clinicalcase\\clinicalhandsanimationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\clinicalhandsanimationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|d:\\future_lab\\assets\\scripts\\clinicalcase\\clinicalassessmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\assets\\scripts\\clinicalcase\\clinicalassessmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\clinicalassessmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -15,12 +19,8 @@
       "RelativeMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\interviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|d:\\future_lab\\assets\\scripts\\clinicalcase\\laboratoryuicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\assets\\scripts\\clinicalcase\\laboratoryuicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\laboratoryuicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\assets\\scripts\\clinicalcase\\diagnosiscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\clinicalcase\\diagnosiscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{635947E1-66C6-CFC5-E865-885CB25A1C53}|Assembly-CSharp.csproj|D:\\FUTURE_LAB\\assets\\scripts\\clinicalcase\\labtestcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,19 +34,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "DiagnosisController.cs",
               "DocumentMoniker": "D:\\FUTURE_LAB\\Assets\\Scripts\\ClinicalCase\\DiagnosisController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\DiagnosisController.cs",
               "ToolTip": "D:\\FUTURE_LAB\\Assets\\Scripts\\ClinicalCase\\DiagnosisController.cs",
               "RelativeToolTip": "Assets\\Scripts\\ClinicalCase\\DiagnosisController.cs",
-              "ViewState": "AgIAANIAAAAAAAAAAAA3wPEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADQBAAAAAAAAAAAwwFQBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-19T20:49:32.92Z"
+              "WhenOpened": "2026-10-19T20:49:32.92Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -62,7 +63,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "LaboratoryUIController.cs",
               "DocumentMoniker": "D:\\FUTURE_LAB\\Assets\\Scripts\\ClinicalCase\\LaboratoryUIController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\LaboratoryUIController.cs",
@@ -70,12 +71,11 @@
               "RelativeToolTip": "Assets\\Scripts\\ClinicalCase\\LaboratoryUIController.cs",
               "ViewState": "AgIAAAgBAAAAAAAAAAAkwBABAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-19T20:21:50.473Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-19T20:21:50.473Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ClinicalAssessmentController.cs",
               "DocumentMoniker": "D:\\FUTURE_LAB\\Assets\\Scripts\\ClinicalCase\\ClinicalAssessmentController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\ClinicalAssessmentController.cs",
@@ -83,12 +83,11 @@
               "RelativeToolTip": "Assets\\Scripts\\ClinicalCase\\ClinicalAssessmentController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-21T14:32:28.803Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-21T14:32:28.803Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "InterviewController.cs",
               "DocumentMoniker": "D:\\FUTURE_LAB\\Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
@@ -96,12 +95,11 @@
               "RelativeToolTip": "Assets\\Scripts\\ClinicalCase\\InterviewController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-19T15:18:18.31Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-19T15:18:18.31Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ClinicalHandsAnimationController.cs",
               "DocumentMoniker": "D:\\FUTURE_LAB\\Assets\\Scripts\\ClinicalCase\\ClinicalHandsAnimationController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ClinicalCase\\ClinicalHandsAnimationController.cs",
